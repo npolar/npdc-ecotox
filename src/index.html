@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="npdcEcotoxApp" ng-cloak ng-strict-di manifest="app.manifest">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<base href="/ecotox/"/>
+	<title>Ecotox templates</title>
+	<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+	<link href="/assets/npdc-common-<!-- @echo COMMON_VERSION -->.css" rel="stylesheet">
+	<link href="npdc-ecotox-<!-- @echo BRANCH -->-latest.css" rel="stylesheet">
+	<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-ecotox version:", VERSION);</script>
+</head>
+
+<body>
+  <npdc:app></npdc:app>
+	<!-- @if PROD -->
+	<script src="/assets/npdc-common-<!-- @echo COMMON_VERSION -->.js"></script>
+	<!-- @endif -->
+  <script src="app.js"></script>
+</body>
+</html>

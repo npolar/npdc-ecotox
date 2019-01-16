@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<npdc:edit-button class="np-primary-control"></npdc:edit-button>
+<npdc:loader ng-if="!document"></npdc:loader>
+<div class="np-padding">
+  <div ng-if="document" class="np-doc">
+
+
+
+<section>
+    <h3>{{ 'Used once' | t }}</h3>
+   <md-list>
+    <p ng-if="document.original_sample_name">{{ 'Original sample marking' | t }}: {{document.original_sample_name}}</p>
+    <p ng-if="document.sample_description">{{ 'Sample description' | t }}: {{document.sample_description}}</p>
+    <p ng-if="document.cabinet_no">{{ 'Box/cabinet no' | t }}: {{document.cabinet_no}}</p>
+    <p ng-if="document.thin_section">{{ 'Thin section no' | t }}: {{document.thin_section}}</p>
+    <p ng-if="document.fossil == 'yes' ">{{ 'Fossil' | t }}: {{ 'yes' | t }}</p>
+  </md-list>
+</section>
+
+<section>
+    <h3>{{ 'Used many times' | t }}</h3>
+   <md-list>
+    <p ng-if="document.original_sample_name">{{ 'Original sample marking' | t }}: {{document.original_sample_name}}</p>
+    <p ng-if="document.sample_description">{{ 'Sample description' | t }}: {{document.sample_description}}</p>
+    <p ng-if="document.cabinet_no">{{ 'Box/cabinet no' | t }}: {{document.cabinet_no}}</p>
+    <p ng-if="document.thin_section">{{ 'Thin section no' | t }}: {{document.thin_section}}</p>
+    <p ng-if="document.fossil == 'yes' ">{{ 'Fossil' | t }}: {{ 'yes' | t }}</p>
+    <p ng-if="document.analysis">{{ 'Analysis' | t }}: <span ng-repeat="item in document.analysis" class="nowrap">{{ item }} &nbsp;&nbsp;</span> </p>
+  </md-list>
+</section>
+
+<!-- created updated -->
+      <section>
+        <npdc:document-meta></npdc:document-meta>
+      </section>
+
+    </div>
+</div>

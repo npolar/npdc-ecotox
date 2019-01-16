@@ -1,0 +1,40 @@
+{
+  "name": "npdc-ecotox",
+  "version": "0.0.1",
+  "description": "All apps ecotox Norwegian Polar Institute",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "npolar",
+  "license": "MIT",
+  "private": true,
+  "repository": "https://github.com/npolar/npdc-ecotox",
+  "dependencies": {
+    "npdc-common": "npolar/npdc-common#v4.10.16"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "gulp": "^3.9.0",
+    "should": "^7.1.0",
+    "npdc-gulp": "npolar/npdc-gulp",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "browserify-ngannotate": "^2.0.0",
+    "partialify": "^3.1.3"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ],
+      "partialify",
+      "browserify-ngannotate"
+    ]
+  }
+}
