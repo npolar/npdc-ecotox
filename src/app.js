@@ -10,12 +10,10 @@ var npdcEcotoxApp = angular.module('npdcEcotoxApp', ['npdcCommon','leaflet']);
 npdcEcotoxApp.controller('EcotoxTemplateShowController', require('./ecotox-template/show/EcotoxTemplateShowController'));
 npdcEcotoxApp.controller('EcotoxTemplateSearchController', require('./ecotox-template/search/EcotoxTemplateSearchController'));
 npdcEcotoxApp.controller('EcotoxTemplateEditController', require('./ecotox-template/edit/EcotoxTemplateEditController'));
-npdcEcotoxApp.directive('ecotoxTemplateCoverage', require('./ecotox-template/edit/coverage/coverageDirective'));
 npdcEcotoxApp.factory('EcotoxTemplate', require('./ecotox-template/EcotoxTemplate.js'));
 npdcEcotoxApp.controller('EcotoxFieldworkShowController', require('./ecotox-fieldwork/show/EcotoxFieldworkShowController'));
 npdcEcotoxApp.controller('EcotoxFieldworkSearchController', require('./ecotox-fieldwork/search/EcotoxFieldworkSearchController'));
 npdcEcotoxApp.controller('EcotoxFieldworkEditController', require('./ecotox-fieldwork/edit/EcotoxFieldworkEditController'));
-npdcEcotoxApp.directive('ecotoxFieldworkCoverage', require('./ecotox-fieldwork/edit/coverage/coverageDirective'));
 npdcEcotoxApp.factory('EcotoxFieldwork', require('./ecotox-fieldwork/EcotoxFieldwork.js'));
 
 // Bootstrap ngResource models using NpolarApiResource

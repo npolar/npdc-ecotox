@@ -1,94 +1,53 @@
 'use strict';
 
+var EcotoxTemplateEditController = function($scope, $controller, $routeParams, GeologySample, EcotoxTemplate, formula,
+  formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
+  NpolarApiSecurity, npolarCountryService, NpolarMessage) {
+  'ngInject';
 
-// @ngInject
+   function init() {
 
-var EcotoxTemplateEditController = function($scope, $controller, $routeParams, $http, $sce, EcotoxTemplate, GeologySample, formula,
-  formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang,
-npolarApiConfig, NpolarApiSecurity, NpolarMessage, npolarCountryService) {
-
-
-
-  function init() {
-
- // EditController -> NpolarEditController
- $controller('NpolarEditController', {
-   $scope: $scope
- });
-
- // GeologySample -> npolarApiResource -> ngResource
- $scope.resource = EcotoxTemplate;
-
- let templates = [];
-
- let i18n = [
-   {
-     map: require('./no.json'),
-     code: 'nb_NO',
-   }];
-
- $scope.formula = formula.getInstance({
-   schema: '//api-test.data.npolar.no/schema/ecotox-template',
-   form: 'edit/formula.json',
-   language: NpolarLang.getLang(),
-   templates: npdcAppConfig.formula.templates.concat(templates),
-   languages: npdcAppConfig.formula.languages.concat(i18n)
+  // EditController -> NpolarEditController
+  $controller('NpolarEditController', {
+    $scope: $scope
   });
 
- initFileUpload($scope.formula);
+  // GeologySample -> npolarApiResource -> ngResource
+  $scope.resource = EcotoxTemplate;
 
- formulaAutoCompleteService.autocomplete({
-   match: "@placename",
-   querySource: 'https://api.npolar.no/placename?q-name.@value=&format=json&filter-status=official',
-   //api.npolar.no/placename/?q=&filter-status=official&format=json&fields=type.id,name
-   label: 'name.@value',   // ["name['@value']"],
-   value: 'name.@value'
- }, $scope.formula);
+  let templates = [];
 
- formulaAutoCompleteService.autocompleteFacets(['lithology', 'expedition','geologist'], $scope.resource, $scope.formula);
+  let i18n = [
+  //{
+  //    map: require('./en.json'),
+  //    code: 'en'
+  //  },
+    {
+      map: require('./no.json'),
+      code: 'nb_NO',
+    }];
 
-
- let autocompleteFacets = ["geologist"];
- formulaAutoCompleteService.autocompleteFacets(autocompleteFacets, GeologySample, $scope.formula);
-
-
-//Set chronopic view format (this does not change the internal value, i.e. ISO string date)
-chronopicService.defineOptions({ match(field) {
-   return field.path.match(/_date$/);
-}, format: '{date}'});
-
+  $scope.formula = formula.getInstance({
+    schema: '//api-test.data.npolar.no/schema/ecotox-template',
+    form: 'edit/formula.json',
+    language: NpolarLang.getLang(),
+    templates: npdcAppConfig.formula.templates.concat(templates),
+    languages: npdcAppConfig.formula.languages.concat(i18n)
+   });
 }
 
 
-function initFileUpload(formula) {
+  try {
+    init();
 
-   let server = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/:id/_file`;
+     // edit (or new) action
+     $scope.edit();
 
-   fileFunnelService.fileUploader({
-     match(field) {
-       return field.id === "files";
-     },
-     server,
-     multiple: true,
-     //progress: false,
-      restricted: function () {
-       return formula.getModel().restricted;
-     },
-     fileToValueMapper: GeologySample.fileObject,
-     valueToFileMapper: GeologySample.hashiObject,
-     fields: ['filename'] // 'type', 'hash'
-   }, formula);
-}
+  } catch (e) {
+    NpolarMessage.error(e);
+  }
 
- try {
-   init();
 
-    // edit (or new) action
-    $scope.edit();
-
- } catch (e) {
-   NpolarMessage.error(e);
- }
 };
 
 module.exports = EcotoxTemplateEditController;
