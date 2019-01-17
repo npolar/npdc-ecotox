@@ -1,12 +1,172 @@
 {
   "fieldsets": [{
-    "title": "Sample",
+    "title": "Project",
     "fields": [
       {
         "id": "title",
-         "title": "sample id"
-      }
+         "title": "template name"
+      },
+      {
+				"id": "project",
+				"fields": ["needed","once"]
+	   },
+     {
+      "id": "parent_event_id",
+      "fields": ["needed","once"]
+     },
+     {
+      "id": "ris_id",
+      "title": "RiS ID",
+      "fields": ["needed","once"]
+     },
+     {
+      "id": "rightsholder",
+      "title": "Institutions that owns the data",
+      "fields": ["!needed","once"]
+     },
+     {
+     "id": "people_responsible",
+     "title":"Who is responsible for the data",
+     "fields": ["!needed","once"]
+     },
+     {
+      "id": "reference",
+      "title":"Include reference",
+      "fields": ["needed","once"]
+    }
     ]},
+    {
+      "title": "Time/place",
+      "fields": [
+        {
+         "id": "event_date",
+         "fields": ["!needed","once"]
+        },
+        {
+          "id": "placename",
+          "fields": ["!needed","once","list"]
+        },
+        {
+          "id": "latitude",
+          "fields": ["!needed","once","list"]
+        },
+        {
+          "id": "longitude",
+          "fields": ["!needed","once","list"]
+        }
+      ]
+    },
+    {
+      "title": "Sample",
+      "fields": [
+        {
+        "id": "species",
+        "title":"Name of species",
+        "fields": ["!needed","once"]
+        },
+        {
+        "id": "species_identification",
+        "title":"Identification of individual (bird ring, polar bear ID etc)",
+        "fields": ["!needed","once"]
+        },
+        {
+            "id": "matrix",
+            "fields": ["!needed","once"]
+         },
+         {
+         "id": "label_name",
+         "title":"Id written on sample",
+         "fields": ["needed","once"]
+       },
+       {
+       "id": "no_samples_amount",
+       "title":"Number of samples, amount description etc",
+       "fields": ["needed","once"]
+       },
+       {
+       "id": "samples_remarks",
+       "title":"Sample comment/remark",
+       "fields": ["needed","once"]
+       },
+       {
+       "id": "people_collector",
+       "title":"Who has collected the data",
+       "fields": ["needed","once"]
+     },
+     {
+     "id": "ecotox_lab",
+     "fields": ["!needed","once"]
+     },
+     {
+     "id": "comment",
+     "fields": ["needed","once"]
+     },
+     "additional"
+      ]
+    },
+    {
+      "title": "Base",
+      "fields": [
+        {
+        "id": "age",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "age_group",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "stage",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "sex",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "weight",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "girth",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "length",
+        "fields": ["needed","once"]
+        }
+      ]
+    },
+    {
+      "title": "Birds",
+      "fields": [
+        {
+        "id": "molt",
+        "fields": ["needed","once"]
+        }
+      ]
+    },
+    {
+      "title": "Mammals",
+      "fields": [
+        {
+        "id": "blubber_thinkness_back",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "tusk_volume",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "tusk_length",
+        "fields": ["needed","once"]
+        },
+        {
+        "id": "tusk_girth",
+        "fields": ["needed","once"]
+        }
+      ]
+    },
     {
     "title": "Edits",
     "fields": [

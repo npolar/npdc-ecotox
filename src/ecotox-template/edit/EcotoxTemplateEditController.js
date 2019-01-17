@@ -1,6 +1,6 @@
 'use strict';
 
-var EcotoxTemplateEditController = function($scope, $controller, $routeParams, GeologySample, EcotoxTemplate, formula,
+var EcotoxTemplateEditController = function($scope, $controller, $routeParams, EcotoxTemplate, formula,
   formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
   NpolarApiSecurity, npolarCountryService, NpolarMessage) {
   'ngInject';
@@ -46,8 +46,6 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, G
   } catch (e) {
     NpolarMessage.error(e);
   }
-
-
 };
 
 module.exports = EcotoxTemplateEditController;
