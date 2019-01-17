@@ -29,7 +29,7 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, G
 
   $scope.formula = formula.getInstance({
     schema: '//api-test.data.npolar.no/schema/ecotox-template',
-    form: 'edit/formula.json',
+    form: 'ecotox-template/edit/formula.json',
     language: NpolarLang.getLang(),
     templates: npdcAppConfig.formula.templates.concat(templates),
     languages: npdcAppConfig.formula.languages.concat(i18n)
