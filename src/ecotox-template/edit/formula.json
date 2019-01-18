@@ -3,15 +3,17 @@
     "title": "Project",
     "fields": [
       {
-        "id": "title",
-         "title": "template name"
+      "id": "title",
+      "title": "template name"
       },
       {
-				"id": "project",
-				"fields": ["needed","once"]
+			"id": "project",
+      "title":"Project",
+			"fields": ["needed","once"]
 	   },
      {
       "id": "parent_event_id",
+      "title":"Expedition ID",
       "fields": ["needed","once"]
      },
      {
@@ -40,18 +42,22 @@
       "fields": [
         {
          "id": "event_date",
+         "title": "Event date",
          "fields": ["!needed","once"]
         },
         {
           "id": "placename",
+          "title": "Placename",
           "fields": ["!needed","once","list"]
         },
         {
           "id": "latitude",
+          "title": "Latitude",
           "fields": ["!needed","once","list"]
         },
         {
           "id": "longitude",
+          "title": "Longitude",
           "fields": ["!needed","once","list"]
         }
       ]
@@ -70,8 +76,9 @@
         "fields": ["!needed","once"]
         },
         {
-            "id": "matrix",
-            "fields": ["!needed","once"]
+        "id": "matrix",
+        "title":"Matrix",
+        "fields": ["!needed","once"]
          },
          {
          "id": "label_name",
@@ -95,11 +102,8 @@
      },
      {
      "id": "ecotox_lab",
+     "title":"Link to lab data sample (use after analysis)",
      "fields": ["!needed","once"]
-     },
-     {
-     "id": "comment",
-     "fields": ["needed","once"]
      },
      "additional"
       ]
@@ -109,30 +113,37 @@
       "fields": [
         {
         "id": "age",
+        "title": "Age",
         "fields": ["needed","once"]
         },
         {
         "id": "age_group",
+        "title": "Age group",
         "fields": ["needed","once"]
         },
         {
         "id": "stage",
+        "title": "Stage",
         "fields": ["needed","once"]
         },
         {
         "id": "sex",
+        "title": "Sex",
         "fields": ["needed","once"]
         },
         {
         "id": "weight",
+        "title": "Weight",
         "fields": ["needed","once"]
         },
         {
         "id": "girth",
+        "title": "Girth",
         "fields": ["needed","once"]
         },
         {
         "id": "length",
+        "title": "Length",
         "fields": ["needed","once"]
         }
       ]
@@ -142,6 +153,7 @@
       "fields": [
         {
         "id": "molt",
+        "title": "Molting period",
         "fields": ["needed","once"]
         }
       ]
@@ -151,18 +163,22 @@
       "fields": [
         {
         "id": "blubber_thinkness_back",
+        "title": "Blubber thickness on back",
         "fields": ["needed","once"]
         },
         {
         "id": "tusk_volume",
+        "title": "Tusk volume",
         "fields": ["needed","once"]
         },
         {
         "id": "tusk_length",
+        "title": "Tusk length",
         "fields": ["needed","once"]
         },
         {
         "id": "tusk_girth",
+        "title": "Tusk girth",
         "fields": ["needed","once"]
         }
       ]
@@ -181,6 +197,9 @@
         "disabled": true
       }, {
         "id": "updated_by",
+        "disabled": true
+      }, {
+        "id": "comment",
         "disabled": true
       }
     ]
