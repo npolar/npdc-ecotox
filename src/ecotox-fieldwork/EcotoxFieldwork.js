@@ -7,8 +7,17 @@ function EcotoxTemplate( $q, EcotoxTemplateResource) {
   EcotoxTemplateResource.create = function() {
       let lang = 'en';
       let collection = "ecotox";
+      let matrix = { "needed": true};
+      let event_date = {"needed": true};
+      let latitude = {"needed": true};
+      let longitude = {"needed": true};
+      let location = {"needed": true};
+      let people_responsible = {"needed": true};
+      let ecotox_lab = {"needed": true};
+      let rightsholder = {"needed": true};
+      let species = {"needed": true};
       let schema = 'http://api.npolar.no/schema/ecotox-template';
-      let e = {  lang, collection, schema };
+      let e = {lang, collection, schema,matrix,event_date,latitude,longitude,location,people_responsible,ecotox_lab,rightsholder,species};
       console.debug(e);
       return e;
 

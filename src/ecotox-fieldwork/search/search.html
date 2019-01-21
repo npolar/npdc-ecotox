@@ -1,6 +1,6 @@
 <span class="npdc-crumbs-container">
     <span>
-       <a href="template">Template</a>
+       <a href="template">Create/edit template</a>
     </span>
 </span>
 
@@ -8,4 +8,24 @@
 
 <npdc:contributions></npdc:contributions>
 
- <npdc:search feed="feed"></npdc:search>
+ <!-- <npdc:search feed="feed"></npdc:search> -->
+
+<section>
+  <div class="np-layout-list">
+          <md-list>
+
+            <md-list-item class="md-2-line" ng-repeat="e in feed.entries" ng-href="fieldwork/{{ e.id }}">
+
+                 <img class="md-avatar" src="{{e.files[0].uri}}" alt="{{ e.files[0].filename }}"  title="ID: {{ e.id }}" />
+
+              <div class="md-list-item-text">
+                <h3 class="md-headline">{{ e.title | t }}<em>「{{ e.updated_by | t }}」</em></h3>
+                <h4>Created: {{ (e.created).substring(0,10) }}, updated: {{ (e.updated).substring(0,10) }}</h4>
+              </div>
+            </md-list-item>
+          </md-list>
+          <md-divider></md-divider>
+        </div>
+         <md-button class="md-raised md-primary" ng-if="showNext()" ng-click="next()">More</md-button>
+  </div>
+</section>

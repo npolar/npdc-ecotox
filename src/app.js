@@ -11,7 +11,6 @@ npdcEcotoxApp.controller('EcotoxTemplateShowController', require('./ecotox-templ
 npdcEcotoxApp.controller('EcotoxTemplateSearchController', require('./ecotox-template/search/EcotoxTemplateSearchController'));
 npdcEcotoxApp.controller('EcotoxTemplateEditController', require('./ecotox-template/edit/EcotoxTemplateEditController'));
 npdcEcotoxApp.factory('EcotoxTemplate', require('./ecotox-template/EcotoxTemplate.js'));
-npdcEcotoxApp.controller('EcotoxFieldworkShowController', require('./ecotox-fieldwork/show/EcotoxFieldworkShowController'));
 npdcEcotoxApp.controller('EcotoxFieldworkSearchController', require('./ecotox-fieldwork/search/EcotoxFieldworkSearchController'));
 npdcEcotoxApp.controller('EcotoxFieldworkEditController', require('./ecotox-fieldwork/edit/EcotoxFieldworkEditController'));
 npdcEcotoxApp.factory('EcotoxFieldwork', require('./ecotox-fieldwork/EcotoxFieldwork.js'));
@@ -24,8 +23,7 @@ var resources = [
   {'path': '/project', 'resource': 'Project'},
   {'path': '/expedition', 'resource': 'Expedition'},
   {'path': '/publication', 'resource': 'Publication'},
-  {'path': '/ecotox/template', 'resource': 'EcotoxTemplate'},
-    {'path': '/geology/sample', 'resource': 'GeologySample'}
+  {'path': '/ecotox/template', 'resource': 'EcotoxTemplateResource'}
 
 ];
 

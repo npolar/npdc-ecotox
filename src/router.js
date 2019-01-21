@@ -15,8 +15,7 @@ var router = function($routeProvider, $locationProvider) {
       template: '<npdc:formula></npdc:formula>',
       controller: 'EcotoxTemplateEditController'
   }).when('/fieldwork/:id', {
-        templateUrl: 'ecotox-fieldwork/show/show-ecotox-fieldwork.html',
-        controller: 'EcotoxFieldworkShowController'
+      redirectTo: '/fieldwork/:id/edit'
   }).when('/fieldwork/:id/edit', {
         template: '<npdc:formula></npdc:formula>',
         controller: 'EcotoxFieldworkEditController'

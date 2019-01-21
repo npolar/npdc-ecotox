@@ -48,17 +48,17 @@
         {
           "id": "placename",
           "title": "Placename",
-          "fields": ["!needed","once","list"]
+          "fields": ["!needed","once","use_list"]
         },
         {
           "id": "latitude",
           "title": "Latitude",
-          "fields": ["!needed","once","list"]
+          "fields": ["!needed","once","use_list"]
         },
         {
           "id": "longitude",
           "title": "Longitude",
-          "fields": ["!needed","once","list"]
+          "fields": ["!needed","once","use_list"]
         }
       ]
     },

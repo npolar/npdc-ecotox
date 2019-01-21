@@ -1,11 +1,11 @@
 'use strict';
 
 
-var EcotoxFieldworkSearchController = function ($http, $scope, $location, $controller, $filter, NpolarApiSecurity, EcotoxFieldwork, npdcAppConfig,  NpdcSearchService, NpolarTranslate) {
+var EcotoxFieldworkSearchController = function ($http, $scope, $location, $controller, $filter, NpolarApiSecurity, EcotoxTemplate, npdcAppConfig,  NpdcSearchService, NpolarTranslate) {
   'ngInject';
 
   $controller('NpolarBaseController', { $scope: $scope });
-  $scope.resource = EcotoxFieldwork;
+  $scope.resource = EcotoxTemplate;
 
   npdcAppConfig.search.local.results.detail = (entry) => {
      let r = "Created: " + (entry.created).substring(0,10) + ", updated: " + (entry.updated).substring(0,10);

@@ -1,6 +1,6 @@
 'use strict';
 
-var EcotoxTemplateEditController = function($scope, $controller, $routeParams, EcotoxTemplate, formula,
+var EcotoxTemplateEditController = function($scope, $controller, $routeParams, EcotoxTemplateResource, formula,
   formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
   NpolarApiSecurity, npolarCountryService, NpolarMessage) {
   'ngInject';
@@ -13,7 +13,7 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
   });
 
   // EcotoxTemplate -> npolarApiResource -> ngResource
-  $scope.resource = EcotoxTemplate;
+  $scope.resource = EcotoxTemplateResource;
 
   let templates = [];
 
@@ -28,7 +28,7 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
     }];
 
   $scope.formula = formula.getInstance({
-    schema: '//api.npolar.no/schema/geology-sample',
+    schema: '//api.npolar.no/schema/fieldwork',
     form: 'edit/formula.json',
     language: NpolarLang.getLang(),
     templates: npdcAppConfig.formula.templates.concat(templates),
