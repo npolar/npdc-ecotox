@@ -5,7 +5,7 @@ var AutoConfig = npdcCommon.AutoConfig;
 var angular = require('angular');
 require('npdc-common/src/wrappers/leaflet');
 
-var npdcEcotoxApp = angular.module('npdcEcotoxApp', ['npdcCommon','leaflet']);
+var npdcEcotoxApp = angular.module('npdcEcotoxApp', ['npdcCommon']);
 
 npdcEcotoxApp.controller('EcotoxTemplateShowController', require('./ecotox-template/show/EcotoxTemplateShowController'));
 npdcEcotoxApp.controller('EcotoxTemplateSearchController', require('./ecotox-template/search/EcotoxTemplateSearchController'));
@@ -52,5 +52,6 @@ npdcEcotoxApp.config(($httpProvider, npolarApiConfig) => {
 
 npdcEcotoxApp.run(( npdcAppConfig, NpolarTranslate) => {
   npdcAppConfig.help = { uri: 'https://github.com/npolar/npdc-ecotox/wiki' };
-  NpolarTranslate.loadBundles('npdc-ecotox');
+  //NpolarTranslate.loadBundles('npdc-ecotox');
+  npdcAppConfig.toolbarTitle = NpolarTranslate.translate("Norwegian Polar Institute's ecotox archive");
 });
