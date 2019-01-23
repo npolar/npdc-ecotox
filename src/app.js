@@ -14,6 +14,7 @@ npdcEcotoxApp.factory('EcotoxTemplate', require('./ecotox-template/EcotoxTemplat
 npdcEcotoxApp.controller('EcotoxFieldworkSearchController', require('./ecotox-fieldwork/search/EcotoxFieldworkSearchController'));
 npdcEcotoxApp.controller('EcotoxFieldworkEditController', require('./ecotox-fieldwork/edit/EcotoxFieldworkEditController'));
 npdcEcotoxApp.factory('EcotoxFieldwork', require('./ecotox-fieldwork/EcotoxFieldwork.js'));
+npdcEcotoxApp.service('EcotoxDBSearch', require('./ecotox-fieldwork/edit/EcotoxDBSearch.js'));
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [

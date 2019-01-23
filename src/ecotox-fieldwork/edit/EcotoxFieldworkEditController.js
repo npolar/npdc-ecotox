@@ -5,6 +5,22 @@ var EcotoxFieldworkEditController = function($scope, $controller, $routeParams, 
   NpolarApiSecurity, npolarCountryService, NpolarMessage) {
   'ngInject';
 
+
+    function init() {
+    // EditController -> NpolarEditController
+    $controller('NpolarEditController', {
+      $scope: $scope
+    });
+
+    // EcotoxTemplate -> npolarApiResource -> ngResource
+    console.log($scope);
+    $scope.resource = EcotoxTemplate;
+    console.log($scope);
+    console.log("XXXXXXXXXX");
+    }
+
+
+
   //Jump to another tab
   $scope.ecotoxTab = function(label) {
     var i, tabcontent, tablinks;
@@ -20,18 +36,6 @@ var EcotoxFieldworkEditController = function($scope, $controller, $routeParams, 
     //evt.currentTarget.className += " active";
   };
 
-
-  function init() {
-  // EditController -> NpolarEditController
-  $controller('NpolarEditController', {
-    $scope: $scope
-  });
-
-  // EcotoxTemplate -> npolarApiResource -> ngResource
-  $scope.resource = EcotoxTemplate;
-  console.log($scope);
-  console.log("XXXXXXXXXX");
-  }
 
 
 
