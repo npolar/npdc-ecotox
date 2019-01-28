@@ -7,6 +7,7 @@ var EcotoxFieldworkSearchController = function ($http, $scope, $location, $contr
   $controller('NpolarBaseController', { $scope: $scope });
   $scope.resource = EcotoxTemplate;
 
+
   npdcAppConfig.search.local.results.detail = (entry) => {
      let r = "Created: " + (entry.created).substring(0,10) + ", updated: " + (entry.updated).substring(0,10);
      return r;

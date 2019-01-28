@@ -24,6 +24,7 @@ var resources = [
   {'path': '/project', 'resource': 'Project'},
   {'path': '/expedition', 'resource': 'Expedition'},
   {'path': '/publication', 'resource': 'Publication'},
+  {'path': '/geology/sample', 'resource': 'GeologySample'},
   {'path': '/ecotox/template', 'resource': 'EcotoxTemplateResource'},
   {'path': '/ecotox/template', 'resource': 'EcotoxTemplate'}
 

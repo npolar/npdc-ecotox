@@ -1,24 +1,35 @@
 'use strict';
 
-var EcotoxFieldworkEditController = function($scope, $controller, $routeParams, EcotoxTemplate,
-  npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
-  NpolarApiSecurity, npolarCountryService, NpolarMessage) {
+var EcotoxFieldworkEditController = function($http, $scope, $location, $controller, $routeParams, EcotoxTemplate,
+  $filter, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
+  NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage) {
   'ngInject';
 
+   $controller('NpolarEditController', { $scope: $scope });
+   $scope.resource = EcotoxTemplate;
 
-    function init() {
-    // EditController -> NpolarEditController
-    $controller('NpolarEditController', {
-      $scope: $scope
-    });
 
-    // EcotoxTemplate -> npolarApiResource -> ngResource
-    console.log($scope);
-    $scope.resource = EcotoxTemplate;
-    console.log($scope);
-    console.log("XXXXXXXXXX");
-    }
+    let query = function() {
 
+        let defaults;
+
+        defaults = {
+            limit: "50",
+            sort:  "title",
+          //  filter:"-id=4568140a7f01462edc029e42ab078155"
+            //fields: 'title,created,updated,updated_by,id',
+            facets: 'title'
+          };
+
+      let invariants = $scope.security.isAuthenticated() ? {} : {} ;
+      return Object.assign({}, defaults, invariants);
+      };
+
+
+    var res = $scope.search(query());
+
+
+  console.log(res);
 
 
   //Jump to another tab
@@ -38,20 +49,14 @@ var EcotoxFieldworkEditController = function($scope, $controller, $routeParams, 
 
 
 
-
-  try {
-    init();
-
+//  try {
+//    init();
      // edit (or new) action
     // $scope.edit();
-
-  } catch (e) {
-    NpolarMessage.error(e);
-  }
-
-
+//  } catch (e) {
+//    NpolarMessage.error(e);
+//  }
 };
-
 
 
 module.exports = EcotoxFieldworkEditController;
