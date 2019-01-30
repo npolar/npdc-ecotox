@@ -1,35 +1,41 @@
 'use strict';
 
 var EcotoxFieldworkEditController = function($http, $scope, $location, $controller, $routeParams, EcotoxTemplate,
-  $filter, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
+  EcotoxFieldwork, $filter, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
   NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage) {
   'ngInject';
 
    $controller('NpolarEditController', { $scope: $scope });
    $scope.resource = EcotoxTemplate;
 
-
-    let query = function() {
+    let query = function(search_id,db_key) {
 
         let defaults;
 
-        defaults = {
-            limit: "50",
-            sort:  "title",
-          //  filter:"-id=4568140a7f01462edc029e42ab078155"
-            //fields: 'title,created,updated,updated_by,id',
-            facets: 'title'
+        if (db_key==="template"){
+          defaults = {
+            "filter-id": search_id
           };
+          console.log(defaults);
+        } else {
+          defaults = {
+            "filter-ecotox_template": search_id
+          };
+          console.log(defaults);
+        }
 
       let invariants = $scope.security.isAuthenticated() ? {} : {} ;
       return Object.assign({}, defaults, invariants);
       };
 
 
-    var res = $scope.search(query());
+    var res_template = $scope.search(query("a11a7305-45a8-4ad2-80d9-60f4b8980cc3","template"));
+      console.log(res_template);
 
+    $scope.resource = EcotoxFieldwork;
+    var res_fieldwork = $scope.search(query("a11a7305-45a8-4ad2-80d9-60f4b8980cc3","fieldwork"));
+    console.log(res_fieldwork);
 
-  console.log(res);
 
 
   //Jump to another tab
@@ -48,14 +54,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   };
 
 
-
-//  try {
-//    init();
-     // edit (or new) action
-    // $scope.edit();
-//  } catch (e) {
-//    NpolarMessage.error(e);
-//  }
 };
 
 

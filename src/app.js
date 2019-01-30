@@ -4,6 +4,9 @@ var AutoConfig = npdcCommon.AutoConfig;
 
 var angular = require('angular');
 require('npdc-common/src/wrappers/leaflet');
+//require('jquery');
+//require('jqGrid');
+
 
 var npdcEcotoxApp = angular.module('npdcEcotoxApp', ['npdcCommon']);
 
@@ -26,7 +29,8 @@ var resources = [
   {'path': '/publication', 'resource': 'Publication'},
   {'path': '/geology/sample', 'resource': 'GeologySample'},
   {'path': '/ecotox/template', 'resource': 'EcotoxTemplateResource'},
-  {'path': '/ecotox/template', 'resource': 'EcotoxTemplate'}
+  {'path': '/ecotox/template', 'resource': 'EcotoxTemplate'},
+  {'path': '/ecotox/fieldwork', 'resource': 'EcotoxFieldwork'}
 
 
 ];

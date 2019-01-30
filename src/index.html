@@ -8,13 +8,14 @@
 	<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
 	<link href="/assets/npdc-common-<!-- @echo COMMON_VERSION -->.css" rel="stylesheet">
 	<link href="npdc-ecotox-<!-- @echo BRANCH -->-latest.css" rel="stylesheet">
-	<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-ecotox version:", VERSION);</script>
+		<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-ecotox version:", VERSION);</script>
 </head>
 
 <body>
   <npdc:app></npdc:app>
 	<!-- @if PROD -->
 	<script src="/assets/npdc-common-<!-- @echo COMMON_VERSION -->.js"></script>
+
 	<!-- @endif -->
   <script src="app.js"></script>
 </body>
