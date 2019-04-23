@@ -8,78 +8,35 @@
 
 
 <section>
-    <h3>{{ 'Fields filled in once' | t }}</h3>
+    <h3>{{ 'Selected fields' | t }}</h3>
    <md-list>
-
-    <p ng-if="document.project.once == true">{{ 'Project name or ID' | t }}</p>
-    <p ng-if="document.parent_event_id.once == true">{{ 'Expedition database ID' | t }}</p>
-    <p ng-if="document.event_date.once == true">{{ 'Event date' | t }}</p>
-    <p ng-if="document.ris_id.once == true ">{{ 'Ris ID' | t }}</p>
-    <p ng-if="document.rightsholder.once == true ">{{ 'Rightsholder, institution(s)' | t }}</p>
-    <p ng-if="document.reference.once == true ">{{ 'Reference' | t }}</p>
-    <p ng-if="document.species.once == true ">{{ 'Species' | t }}</p>
-    <p ng-if="document.species_identification.once == true ">{{ 'Species identification' | t }}</p>
-    <p ng-if="document.matrix.once == true ">{{ 'Matrix' | t }}</p>
-    <p ng-if="document.label_name.once == true ">{{ 'Label name on samples' | t }}</p>
-    <p ng-if="document.no_samples_amount.once == true ">{{ 'Number of samples/Amount of samples' | t }}</p>
-    <p ng-if="document.samples_remarks.once == true ">{{ 'Sample comment' | t }}</p>
-    <p ng-if="document.placename.once == true ">{{ 'Placename' | t }}</p>
-    <p ng-if="document.latitude.once == true ">{{ 'Latitude' | t }}</p>
-    <p ng-if="document.longitude.once == true ">{{ 'Longitude' | t }}</p>
-    <p ng-if="document.people_collector.once == true ">{{ 'Person collecting the sample' | t }}</p>
-    <p ng-if="document.people_responsible.once == true ">{{ 'Person owning the data' | t }}</p>
-    <p ng-if="document.age.once == true ">{{ 'Age' | t }}</p>
-    <p ng-if="document.stage.once == true ">{{ 'Stage' | t }}</p>
-    <p ng-if="document.placename.once == true ">{{ 'Sex' | t }}</p>
-    <p ng-if="document.age_group.once == true ">{{ 'Age group' | t }}</p>
-    <p ng-if="document.weight.once == true ">{{ 'Weight' | t }}</p>
-    <p ng-if="document.girth.once == true ">{{ 'Girth' | t }}</p>
-    <p ng-if="document.length.once == true ">{{ 'Length' | t }}</p>
-    <p ng-if="document.blubber_thickness_back.once == true ">{{ 'Blubber thickness back' | t }}</p>
-    <p ng-if="document.molt.once == true ">{{ 'Molting' | t }}</p>
-    <p ng-if="document.tusk_volume.once == true ">{{ 'Tusk volume' | t }}</p>
-    <p ng-if="document.tusk_length.once == true ">{{ 'Tusk length' | t }}</p>
-    <p ng-if="document.tusk_girth.once == true ">{{ 'Tusk girth' | t }}</p>
-    <p ng-if="document.comment.once == true ">{{ 'Comment' | t }}</p>
+    <p ng-if="document.parameters_background.project">{{ 'Project name or ID' | t }}</p>
+    <p ng-if="document.parameters_background.parent_event_id == true">{{ 'Expedition database ID' | t }}</p>
+    <p ng-if="document.parameters_time_and_place.event_date == true">{{ 'Event date' | t }}</p>
+    <p ng-if="document.parameters_background.ris_id == true ">{{ 'RiS ID' | t }}</p>
+    <p ng-if="document.parameters_background.people_collector == true ">{{ 'Person collecting the sample' | t }}</p>
+    <p ng-if="document.parameters_background.people_responsible == true ">{{ 'Person owning the data and institution' | t }}</p>
+    <p ng-if="document.parameters_background.reference == true ">{{ 'Reference' | t }}</p>
+    <p ng-if="document.parameters_background.rightsholder == true ">{{ 'Rightsholder' | t }}</p>
+    <p ng-if="document.parameters_base.age == true ">{{ 'Age' | t }}</p>
+    <p ng-if="document.parameters_base.age_group == true ">{{ 'Age group' | t }}</p>
+    <p ng-if="document.parameters_base.girth == true ">{{ 'Girth' | t }}</p>
+    <p ng-if="document.parameters_base.length == true ">{{ 'Length' | t }}</p>
+    <p ng-if="document.parameters_base.sex == true ">{{ 'Sex' | t }}</p>
+    <p ng-if="document.parameters_base.species == true ">{{ 'Species' | t }}</p>
+    <p ng-if="document.parameters_base.stage == true ">{{ 'Stage' | t }}</p>
+    <p ng-if="document.parameters_base.weight == true ">{{ 'Weight' | t }}</p>
+    <p ng-if="document.parameters_base.samples_remarks == true ">{{ 'Comment' | t }}</p>
+    <p ng-if="document.parameters_birds.molt == true ">{{ 'Molting' | t }}</p>
+    <p ng-if="document.parameters_mammals.blubber_thickness_back == true ">{{ 'Blubber thickness back' | t }}</p>
+    <p ng-if="document.parameters_mammals.tusk_length == true ">{{ 'Tusk length' | t }}</p>
+    <p ng-if="document.parameters_mammals.tusk_volume == true ">{{ 'Tusk volume' | t }}</p>
+    <p ng-if="document.parameters_time_and_place.event_date == true ">{{ 'Event date' | t }}</p>
+    <p ng-if="document.parameters_time_and_place.latitude == true ">{{ 'Latitude' | t }}</p>
+    <p ng-if="document.parameters_time_and_place.longitude == true ">{{ 'Longitude' | t }}</p>
+    <p ng-if="document.parameters_time_and_place.longitude == true ">{{ 'Placename' | t }}</p>
   </md-list>
 </section>
-<br /><br />
-<section>
-    <h3>{{ 'Fields filled in many times' | t }}</h3>
-   <md-list>
-     <p ng-if="document.project.once == false">{{ 'Project name or ID' | t }}</p>
-     <p ng-if="document.parent_event_id.once == false">{{ 'Expedition database ID' | t }}</p>
-     <p ng-if="document.event_date.once == false">{{ 'Event date' | t }}</p>
-     <p ng-if="document.ris_id.once == false">{{ 'Ris ID' | t }}</p>
-     <p ng-if="document.rightsholder.once == false">{{ Rightsholder, institution(s) | t }}</p>
-     <p ng-if="document.reference.once == false">{{ 'Reference' | t }}</p>
-     <p ng-if="document.species.once == false">{{ 'Species' | t }}</p>
-     <p ng-if="document.species_identification.once == false">{{ 'Species identification' | t }}</p>
-     <p ng-if="document.matrix.once == false">{{ 'Matrix' | t }}</p>
-     <p ng-if="document.label_name.once == false">{{ 'Label name on samples' | t }}</p>
-     <p ng-if="document.no_samples_amount.once == false">{{ 'Number of samples/Amount of samples' | t }}</p>
-     <p ng-if="document.samples_remarks.once == false">{{ 'Sample comment' | t }}</p>
-     <p ng-if="document.placename.once == false">{{ 'Placename' | t }}</p>
-     <p ng-if="document.latitude.once == false">{{ 'Latitude' | t }}</p>
-     <p ng-if="document.longitude.once == false">{{ 'Longitude' | t }}</p>
-     <p ng-if="document.person_collector.once == false">{{ 'Person collecting the sample' | t }}</p>
-     <p ng-if="document.person_responsible.once == false">{{ 'Person owning the data' | t }}</p>
-     <p ng-if="document.age.once == false">{{ 'Age' | t }}</p>
-     <p ng-if="document.stage.once == false">{{ 'Stage' | t }}</p>
-     <p ng-if="document.placename.once == false">{{ 'Sex' | t }}</p>
-     <p ng-if="document.age_group.once == false">{{ 'Age group' | t }}</p>
-     <p ng-if="document.weight.once == false">{{ 'Weight' | t }}</p>
-     <p ng-if="document.girth.once == false">{{ 'Girth' | t }}</p>
-     <p ng-if="document.length.once == false">{{ 'Length' | t }}</p>
-     <p ng-if="document.blubber_thickness_back.once == false">{{ 'Blubber thickness back' | t }}</p>
-     <p ng-if="document.molt.once == false">{{ 'Molting' | t }}</p>
-     <p ng-if="document.tusk_volume.once == false">{{ 'Tusk volume' | t }}</p>
-     <p ng-if="document.tusk_length.once == false">{{ 'Tusk length' | t }}</p>
-     <p ng-if="document.tusk_girth.once == false">{{ 'Tusk girth' | t }}</p>
-     <p ng-if="document.comment.once == false ">{{ 'Comment' | t }}</p>
-  </md-list>
-</section>
-
 <br /><br />
 <section>
     <h3>{{ 'Additional fields' | t }}</h3>

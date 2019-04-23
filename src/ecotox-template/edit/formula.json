@@ -1,208 +1,96 @@
 {
-  "fieldsets": [{
-    "title": "Project",
-    "fields": [
-      {
-      "id": "title",
-      "title": "template name"
-      },
-      {
-			"id": "project",
-      "title":"Project",
-			"fields": ["needed","once"]
-	   },
-     {
-      "id": "parent_event_id",
-      "title":"Expedition ID",
-      "fields": ["needed","once"]
-     },
-     {
-      "id": "ris_id",
-      "title": "RiS ID",
-      "fields": ["needed","once"]
-     },
-     {
-      "id": "rightsholder",
-      "title": "Institutions that owns the data",
-      "fields": ["!needed","once"]
-     },
-     {
-     "id": "people_responsible",
-     "title":"Who is responsible for the data",
-     "fields": ["!needed","once"]
-     },
-     {
-      "id": "reference",
-      "title":"Include reference",
-      "fields": ["needed","once"]
-    }
-    ]},
-    {
-      "title": "Time/place",
-      "fields": [
-        {
-         "id": "event_date",
-         "title": "Event date",
-         "fields": ["!needed","once"]
-        },
-        {
-          "id": "placename",
-          "title": "Placename",
-          "fields": ["!needed","once","use_list"]
-        },
-        {
-          "id": "latitude",
-          "title": "Latitude",
-          "fields": ["!needed","once","use_list"]
-        },
-        {
-          "id": "longitude",
-          "title": "Longitude",
-          "fields": ["!needed","once","use_list"]
-        }
-      ]
-    },
-    {
-      "title": "Sample",
-      "fields": [
-        {
-        "id": "species",
-        "title":"Name of species",
-        "fields": ["!needed","once"]
-        },
-        {
-        "id": "species_identification",
-        "title":"Identification of individual (bird ring, polar bear ID etc)",
-        "fields": ["!needed","once"]
-        },
-        {
-        "id": "matrix",
-        "title":"Matrix",
-        "fields": ["!needed","once"]
-         },
-         {
-         "id": "label_name",
-         "title":"Id written on sample",
-         "fields": ["needed","once"]
-       },
-       {
-       "id": "no_samples_amount",
-       "title":"Number of samples, amount description etc",
-       "fields": ["needed","once"]
-       },
-       {
-       "id": "samples_remarks",
-       "title":"Sample comment/remark",
-       "fields": ["needed","once"]
-       },
-       {
-       "id": "people_collector",
-       "title":"Who has collected the data",
-       "fields": ["needed","once"]
-     },
-     {
-     "id": "ecotox_lab",
-     "title":"Link to lab data sample (use after analysis)",
-     "fields": ["!needed","once"]
-     },
-     "additional"
-      ]
-    },
-    {
-      "title": "Base",
-      "fields": [
-        {
-        "id": "age",
-        "title": "Age",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "age_group",
-        "title": "Age group",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "stage",
-        "title": "Stage",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "sex",
-        "title": "Sex",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "weight",
-        "title": "Weight",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "girth",
-        "title": "Girth",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "length",
-        "title": "Length",
-        "fields": ["needed","once"]
-        }
-      ]
-    },
-    {
-      "title": "Birds",
-      "fields": [
-        {
-        "id": "molt",
-        "title": "Molting period",
-        "fields": ["needed","once"]
-        }
-      ]
-    },
-    {
-      "title": "Mammals",
-      "fields": [
-        {
-        "id": "blubber_thinkness_back",
-        "title": "Blubber thickness on back",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "tusk_volume",
-        "title": "Tusk volume",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "tusk_length",
-        "title": "Tusk length",
-        "fields": ["needed","once"]
-        },
-        {
-        "id": "tusk_girth",
-        "title": "Tusk girth",
-        "fields": ["needed","once"]
-        }
-      ]
-    },
-    {
-    "title": "Edits",
-    "fields": [
-      {
-        "id": "created",
-        "disabled": true
-      }, {
-        "id": "created_by",
-        "disabled": true
-      }, {
-        "id": "updated",
-        "disabled": true
-      }, {
-        "id": "updated_by",
-        "disabled": true
-      }, {
-        "id": "comment",
-        "disabled": true
-      }
-    ]
-  }
-  ]
+	"fieldsets": [{
+			"title": "Metadata",
+			"fields": [{
+					"id": "title",
+					"title": "title"
+				},
+				{
+					"id": "parameters_background",
+					"title": "Project",
+					"fields": [
+						"project",
+						{"id":"parent_event_id",
+						"title": "expedition database"},
+						"ris_id",
+						{"id":"rightsholder",
+						"title":"institutions owning data"},
+						{"id":"people_responsible",
+						"title":"people responsible for the dataset"},
+						{"id":"people_collector",
+						"title": "person collecting the sample"},
+						"reference"
+					]
+				}
+			]
+		},
+		{
+			"title": "Time and place",
+			"fields": [{
+					"id": "parameters_time_and_place",
+					"title": "Time and place"
+				},
+				"use_list"
+			]
+		}, {
+			"title": "Base",
+			"fields": [{
+				"id": "parameters_base",
+				"title": "Base information"
+			}]
+		},
+		{
+			"title": "Birds",
+			"fields": [{
+				"id": "parameters_birds",
+				"title": "Birds"
+			}]
+		}, {
+			"title": "Mammals",
+			"fields": [{
+				"id": "parameters_mammals",
+				"title": "Mammals"
+			}]
+		}, {
+			"title": "Additional fields",
+			"fields": [{
+				"id": "additional",
+				"title": "Add additional parameters to the list",
+				"items": {
+					"fields": [{
+							"id": "parameter_name",
+							"title": "parameter name (please use english letters only, no special characters beside space and underscore)"
+						},
+						{
+							"id": "parameter_description",
+							"title": "parameter description"
+						}
+					]
+				}
+			}]
+		}, {
+			"title": "Edits",
+			"fields": [{
+					"id": "created",
+					"disabled": true
+				},
+				{
+					"id": "updated",
+					"disabled": true
+				},
+				{
+					"id": "created_by",
+					"disabled": true
+				},
+				{
+					"id": "updated_by",
+					"disabled": true
+				},
+				{
+					"id": "comment",
+					"title": "comment major changes to this entry"
+				}
+			]
+		}
+	]
 }
