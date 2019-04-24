@@ -6,8 +6,8 @@
 					"title": "title"
 				},
 				{
-					"id": "parameters_background",
-					"title": "Project",
+					"id": "parameters_metadata",
+					"title":"Metadata",
 					"fields": [
 						"project",
 						{"id":"parent_event_id",
@@ -28,7 +28,7 @@
 			"title": "Time and place",
 			"fields": [{
 					"id": "parameters_time_and_place",
-					"title": "Time and place"
+					"title":"Time and place"
 				},
 				"use_list"
 			]
@@ -36,22 +36,29 @@
 			"title": "Base",
 			"fields": [{
 				"id": "parameters_base",
-				"title": "Base information"
+				"title":"Base"
 			}]
 		},
 		{
 			"title": "Birds",
 			"fields": [{
 				"id": "parameters_birds",
-				"title": "Birds"
+				"title":"Birds"
 			}]
 		}, {
 			"title": "Mammals",
 			"fields": [{
 				"id": "parameters_mammals",
-				"title": "Mammals"
+				"title":"Mammals"
 			}]
-		}, {
+		},{
+			"title": "Marine life",
+			"fields": [{
+				"id": "parameters_marine_life",
+				"title":"Marine life"
+			}]
+		},
+		{
 			"title": "Additional fields",
 			"fields": [{
 				"id": "additional",

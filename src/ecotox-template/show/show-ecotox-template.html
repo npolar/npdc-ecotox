@@ -10,34 +10,56 @@
 <section>
     <h3>{{ 'Selected fields' | t }}</h3>
    <md-list>
-    <p ng-if="document.parameters_background.project">{{ 'Project name or ID' | t }}</p>
+    <p ng-if="document.parameters_metadata.project">{{ 'Project name or ID' | t }}</p>
     <p ng-if="document.parameters_background.parent_event_id == true">{{ 'Expedition database ID' | t }}</p>
-    <p ng-if="document.parameters_time_and_place.event_date == true">{{ 'Event date' | t }}</p>
     <p ng-if="document.parameters_background.ris_id == true ">{{ 'RiS ID' | t }}</p>
-    <p ng-if="document.parameters_background.people_collector == true ">{{ 'Person collecting the sample' | t }}</p>
-    <p ng-if="document.parameters_background.people_responsible == true ">{{ 'Person owning the data and institution' | t }}</p>
+    <p ng-if="document.parameters_background.people_collector == true ">{{ 'Person(s) collecting the sample' | t }}</p>
+    <p ng-if="document.parameters_background.people_responsible == true ">{{ 'Person(s) owning the data with institution affiliation' | t }}</p>
     <p ng-if="document.parameters_background.reference == true ">{{ 'Reference' | t }}</p>
     <p ng-if="document.parameters_background.rightsholder == true ">{{ 'Rightsholder' | t }}</p>
-    <p ng-if="document.parameters_base.age == true ">{{ 'Age' | t }}</p>
-    <p ng-if="document.parameters_base.age_group == true ">{{ 'Age group' | t }}</p>
-    <p ng-if="document.parameters_base.girth == true ">{{ 'Girth' | t }}</p>
-    <p ng-if="document.parameters_base.length == true ">{{ 'Length' | t }}</p>
-    <p ng-if="document.parameters_base.sex == true ">{{ 'Sex' | t }}</p>
-    <p ng-if="document.parameters_base.species == true ">{{ 'Species' | t }}</p>
-    <p ng-if="document.parameters_base.stage == true ">{{ 'Stage' | t }}</p>
-    <p ng-if="document.parameters_base.weight == true ">{{ 'Weight' | t }}</p>
-    <p ng-if="document.parameters_base.samples_remarks == true ">{{ 'Comment' | t }}</p>
-    <p ng-if="document.parameters_birds.molt == true ">{{ 'Molting' | t }}</p>
-    <p ng-if="document.parameters_mammals.blubber_thickness_back == true ">{{ 'Blubber thickness back' | t }}</p>
-    <p ng-if="document.parameters_mammals.tusk_length == true ">{{ 'Tusk length' | t }}</p>
-    <p ng-if="document.parameters_mammals.tusk_volume == true ">{{ 'Tusk volume' | t }}</p>
-    <p ng-if="document.parameters_time_and_place.event_date == true ">{{ 'Event date' | t }}</p>
+  </md-list>
+   <md-list>
+    <p ng-if="document.parameters_time_and_place.event_date == true">{{ 'Event date' | t }}</p>
+    <p ng-if="document.parameters_time_and_place.placename == true ">{{ 'Placename' | t }}</p>
     <p ng-if="document.parameters_time_and_place.latitude == true ">{{ 'Latitude' | t }}</p>
     <p ng-if="document.parameters_time_and_place.longitude == true ">{{ 'Longitude' | t }}</p>
-    <p ng-if="document.parameters_time_and_place.longitude == true ">{{ 'Placename' | t }}</p>
+  </md-list>
+  <md-list>
+    <p ng-if="document.parameters_base.species == true ">{{ 'Species' | t }}</p>
+    <p ng-if="document.parameters_base.matrix == true ">{{ 'Matrix' | t }}</p>
+    <p ng-if="document.parameters_base.age == true ">{{ 'Age' | t }}</p>
+    <p ng-if="document.parameters_base.stage == true ">{{ 'Stage' | t }}</p>
+    <p ng-if="document.parameters_base.sex == true ">{{ 'Sex' | t }}</p>
+    <p ng-if="document.parameters_base.age_group == true ">{{ 'Age group' | t }}</p>
+    <p ng-if="document.parameters_base.weight == true ">{{ 'Weight' | t }}</p>
+    <p ng-if="document.parameters_base.girth == true ">{{ 'Girth' | t }}</p>
+    <p ng-if="document.parameters_base.length == true ">{{ 'Length' | t }}</p>
+    <p ng-if="document.parameters_base.condition == true ">{{ 'Condition' | t }}</p>
+    <p ng-if="document.parameters_base.samples_remarks == true ">{{ 'Comment' | t }}</p>
+  </md-list>
+  <md-list>
+    <p ng-if="document.parameters_birds.molt == true ">{{ 'Molting' | t }}</p>
+    <p ng-if="document.parameters_birds.tarsus == true ">{{ 'Tarsus' | t }}</p>
+    <p ng-if="document.parameters_birds.bill == true ">{{ 'Bill in mm' | t }}</p>
+    <p ng-if="document.parameters_birds.bill_height == true ">{{ 'Bill height in mm' | t }}</p>
+    <p ng-if="document.parameters_birds.scull == true ">{{ 'Head and bill length or just scull in mm' | t }}</p>
+    <p ng-if="document.parameters_birds.wing == true ">{{ 'Wing, max flatted cord in mm' | t }}</p>
+  </md-list>
+  <md-list>
+    <p ng-if="document.parameters_mammals.blubber_thickness_back == true ">{{ 'Blubber thickness back' | t }}</p>
+    <p ng-if="document.parameters_mammals.tusk_girth == true ">{{ 'Tusk girth' | t }}</p>
+    <p ng-if="document.parameters_mammals.tusk_length == true ">{{ 'Tusk length' | t }}</p>
+    <p ng-if="document.parameters_mammals.tusk_volume == true ">{{ 'Tusk volume' | t }}</p>
+  </md-list>
+  <md-list>
+    <p ng-if="document.parameters_marine_life.caudal_length == true ">{{ 'Caudal length' | t }}</p>
   </md-list>
 </section>
 <br /><br />
+<section>
+    <h3>{{ 'Use list' | t }}</h3>
+    <p ng-if="document.use_list">{{document.use_list}} </p>
+</section>
 <section>
     <h3>{{ 'Additional fields' | t }}</h3>
     <p ng-if="document.additional">{{document.additional}} </p>
