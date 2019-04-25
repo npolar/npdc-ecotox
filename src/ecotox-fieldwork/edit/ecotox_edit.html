@@ -1,28 +1,7 @@
-<!DOCTYPE html>
-<npdc:edit-button class="np-primary-control"></npdc:edit-button>
-<link rel="stylesheet" type="text/css" href="datatables.net-dt/css/jquery.dataTables.min.css">
 
 
-<div ng-controller="EcotoxFieldworkEditController">
-<div class="tab">
-
-  <button class="tablinks" ng-click='ecotoxTab("Field")'>Field</button>
-<!--  <button class="tablinks" ng-click='ecotoxTab("Base")'>Base</button> -->
-  <button class="tablinks" ng-click='ecotoxTab("File_upload")'>File upload</button>
-  <p id="displayTemplate"></p>
-</div>
-</div>
-
-
-<div id="Field" class="tabcontent">
   <h3>Ecotox - Field information</h3>
 
 {{testMsg}}
-
-<table id="example" class="display" width="100%"></table>
-</div>
-
-<!-- Tab content -->
-<div id="File_upload" class="tabcontent">
-  <h3>Ecotox - File upload</h3>
-</div>
+{{resource}}
+<div id="edit_table"></div>
