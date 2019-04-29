@@ -26,6 +26,7 @@
   </md-list>
   <md-list>
     <p ng-if="document.parameters_base.species == true ">{{ 'Species' | t }}</p>
+    <p ng-if="document.parameters_base.species_identification == true ">{{ 'Species identification (bird ring, fox id, polar bear id etc)' | t }}</p>
     <p ng-if="document.parameters_base.matrix == true ">{{ 'Matrix' | t }}</p>
     <p ng-if="document.parameters_base.age == true ">{{ 'Age' | t }}</p>
     <p ng-if="document.parameters_base.stage == true ">{{ 'Stage' | t }}</p>
@@ -38,6 +39,9 @@
     <p ng-if="document.parameters_base.samples_remarks == true ">{{ 'Comment' | t }}</p>
   </md-list>
   <md-list>
+    <p ng-if="document.parameters_birds.colour_ring == true ">{{ 'Ring colour' | t }}</p>
+    <p ng-if="document.parameters_birds.euring_code == true ">{{ 'EU ring code' | t }}</p>
+
     <p ng-if="document.parameters_birds.molt == true ">{{ 'Molting' | t }}</p>
     <p ng-if="document.parameters_birds.tarsus == true ">{{ 'Tarsus' | t }}</p>
     <p ng-if="document.parameters_birds.bill == true ">{{ 'Bill in mm' | t }}</p>
