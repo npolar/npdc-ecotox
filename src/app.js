@@ -48,8 +48,9 @@ resources.forEach(service => {
 npdcEcotoxApp.config(require('./router'));
 
 npdcEcotoxApp.config(($httpProvider, npolarApiConfig) => {
-  var autoconfig = new AutoConfig("development");
-  autoconfig.base = '//api-test.data.npolar.no';
+  //var autoconfig = new AutoConfig("development");
+    var autoconfig = new AutoConfig("production");
+  //autoconfig.base = '//api-test.data.npolar.no';
 
   angular.extend(npolarApiConfig, autoconfig, { resources });
   console.debug("npolarApiConfig", npolarApiConfig);
