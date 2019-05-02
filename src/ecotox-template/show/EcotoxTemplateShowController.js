@@ -1,7 +1,7 @@
 'use strict';
 
 var EcotoxTemplateShowController = function($controller, $routeParams,
-  $scope, $q, EcotoxTemplate, npdcAppConfig, Dataset, Publication, Project) {
+  $scope, $q, EcotoxTemplate, npdcAppConfig, Dataset, Publication, Project, DBSearch, DBSearchQuery) {
     'ngInject';
 
 
@@ -15,20 +15,24 @@ var EcotoxTemplateShowController = function($controller, $routeParams,
   $scope.mapOptions = {};
   $scope.mapOptions.color = "#FF0000";
 
+  //Get enum fields to view select options
+  $scope.jsonSchema = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
+         console.log($scope.jsonSchema);
+  });
 
-  let show = function() {
+  //Get all additional fields to reuse parameters
+  $scope.additional = DBSearchQuery.get({search:'q=&fields=additional', link:'ecotox',link2:'template'}, function(){
+         console.log($scope.additional.feed.entries);
+  });
 
-    $scope.show().$promise.then((EcotoxTemplate) => {
+
+  let show =  $scope.show().$promise.then((EcotoxTemplate) => {
 
       //Overlay the map with lat,lng
       console.log($scope.document);
       $scope.mapOptions.coverage = [[[EcotoxTemplate.latitude,EcotoxTemplate.longitude],[EcotoxTemplate.latitude,EcotoxTemplate.longitude]]];
       $scope.mapOptions.geojson = "geojson";
     });
-
-  };
-
-  show();
 
 };
 

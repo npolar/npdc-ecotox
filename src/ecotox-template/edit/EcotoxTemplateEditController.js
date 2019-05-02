@@ -15,6 +15,7 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
   // GeologySample -> npolarApiResource -> ngResource
   $scope.resource = EcotoxTemplate;
 
+
   let templates = [];
 
   let i18n = [

@@ -2,7 +2,7 @@
 
 var EcotoxFieldworkEditController = function($http, $scope, $location, $controller, $routeParams, EcotoxTemplate,
   EcotoxFieldwork, $filter, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
-  NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage) {
+  NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage, DBSearch) {
   'ngInject';
 
   var tb = require( '@srldl/edit-tabletest/js/edit-table.js');
@@ -10,6 +10,17 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   $controller('NpolarEditController', { $scope: $scope });
 
   $scope.resource = EcotoxTemplate;
+
+  console.log(npolarApiConfig.base);
+  let res = '4568140a7f01462edc029e42ab078155';
+  let link = '';
+  var full = DBSearch.get({search:res, link:'ecotox',link2:'template'}, function(){
+       console.log(full);
+  });
+
+/*  var full = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
+       console.log(full);
+  });*/
 
 //  createButton(document.getElementById("edit_table"), function() {alert(this.parentNode.childNodes[1])});
 
