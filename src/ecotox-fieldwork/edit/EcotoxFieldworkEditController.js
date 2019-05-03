@@ -10,74 +10,75 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   $controller('NpolarEditController', { $scope: $scope });
 
   $scope.resource = EcotoxTemplate;
+  console.log($scope.resource);
+
 
   console.log(npolarApiConfig.base);
   let res = '4568140a7f01462edc029e42ab078155';
   let link = '';
-  var full = DBSearch.get({search:res, link:'ecotox',link2:'template'}, function(){
+
+
+/*  var full = DBSearch.get({search:res, link:'ecotox',link2:'template'}, function(){
        console.log(full);
-  });
+       console.log("full");
+  }); */
+
+
 
 /*  var full = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
        console.log(full);
   });*/
 
-//  createButton(document.getElementById("edit_table"), function() {alert(this.parentNode.childNodes[1])});
+  //Testdata  template and fieldwork
+  let template =  [
+      "matrix",
+      "project",
+      "species",
+      "species_identification",
+      "label_name",
+      "comment",
+      "my_own_field",
+      "my_own_field2",
+      "event_date",
+      "id"
+  ];
 
-//  let obj = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
-//  $scope.testMsg = tb.testMsg(obj);
-
-//Testdata  template and fieldwork
-let template =  [
-    "matrix",
-    "project",
-    "species",
-    "species_identification",
-    "label_name",
-    "comment",
-    "my_own_field",
-    "my_own_field2",
-    "event_date",
-    "id"
-];
-
-let fieldwork = [{
-  "id":"4568140a7f01462edc029e42ab040f01",
-  "matrix":"feather",
-  "project": "Kongsfjorden northern fulmar",
-  "species": "fulmarus glacialis",
-  "species_identification": "77",
-  "label_name": "6745232",
-  "my_own_field": "test",
-  "my_own_field2": "test2",
-  "event_date":"2019-02-01",
-  "comment": "dead"
-},
-{
-  "id":"4568140a7f01462edc029e42ab056e41",
-  "matrix":"feather",
-  "project": "Kongsfjorden northern fulmar",
-  "species": "fulmarus glacialis",
-  "species_identification": "78",
-  "label_name": "6745211",
-  "my_own_field": "test0",
-  "my_own_field2": "test2",
-  "event_date":"2019-09-01",
-  "comment": "Juvenile"
-},
-{
-  "id":"4568140a7f01462edc029e42ab056e41",
-  "matrix":"egg",
-  "project": "Kongsfjorden northern fulmar",
-  "species": "fulmarus glacialis",
-  "species_identification": "79",
-  "label_name": "4566432",
-  "my_own_field": "test1",
-  "my_own_field2": "test2",
-  "event_date":"2019-01-01",
-  "comment": ""
-}];
-
+  let fieldwork = [[
+    "4568140a7f01462edc029e42ab040f01",
+    "feather",
+    "Kongsfjorden northern fulmar",
+    "fulmarus glacialis",
+    "77",
+    "6745232",
+    "test",
+    "test2",
+    "2019-02-01",
+    "dead"
+  ],
+  [
+    "4568140a7f01462edc029e42ab056e41",
+    "feather",
+    "Kongsfjorden northern fulmar",
+    "fulmarus glacialis",
+    "78",
+    "6745211",
+    "test0",
+    "test2",
+    "2019-09-01",
+    "Juvenile"
+  ],
+  [
+    "4568140a7f01462edc029e42ab056e41",
+    "egg",
+    "Kongsfjorden northern fulmar",
+    "fulmarus glacialis",
+    "79",
+    "4566432",
+    "test1",
+    "test2",
+    "2019-01-01",
+    ""
+  ]];
 
 let species_list = ["ursus maritimus", "vulpes lagopus",
       "boreogadus saida","salvelinus alpinus","mallotus villosus",
@@ -101,8 +102,8 @@ let matrix_list = ["egg","milk","whole blood","blood cell",
       "digestive gland"];
 
 //Input object
-let obj = { "fieldwork":fieldwork,
-            "template":template,
+let obj = { "data_rows":fieldwork,
+            "headings":template,
             "selectlist": {"species":species_list, "matrix":matrix_list},
             "autocompletes":["my_own_field","my_own_field2"],
             "datefields":["event_date"]};

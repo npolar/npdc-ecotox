@@ -12,7 +12,7 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
     $scope: $scope
   });
 
-  // GeologySample -> npolarApiResource -> ngResource
+  // EcotoxTemplate -> npolarApiResource -> ngResource
   $scope.resource = EcotoxTemplate;
 
 
