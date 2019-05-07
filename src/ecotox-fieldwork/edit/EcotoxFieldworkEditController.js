@@ -9,13 +9,41 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
   $controller('NpolarEditController', { $scope: $scope });
 
-  $scope.resource = EcotoxTemplate;
+
+  $scope.resource = EcotoxFieldwork;
   console.log($scope.resource);
+  console.log("----------------");
+
+  //COnvert object to array
+  function obj_to_arr(obj){
+      let arr = [];
+      let result = Object.keys(obj).map(function(key) {
+         arr.push(obj[key]);
+      });
+  console.log(arr);
+  console.log("---------");
+  return arr;
+  }
 
 
-  console.log(npolarApiConfig.base);
-  let res = '4568140a7f01462edc029e42ab078155';
-  let link = '';
+  let edit = function() {
+     $scope.show().$promise.then((ecotoxFieldwork) => {
+        console.log($scope.document);
+
+        var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
+               console.log(full.parameters);
+               let heading = obj_to_arr(full.parameters);
+               //convert parameters object into array
+               console.log("full");
+        });
+
+      //  $scope.save().$promise.then((ecotoxFieldwork) => {
+      //     console.log($scope.document);
+      //  });
+     });
+  };
+  edit();
+
 
 
 /*  var full = DBSearch.get({search:res, link:'ecotox',link2:'template'}, function(){

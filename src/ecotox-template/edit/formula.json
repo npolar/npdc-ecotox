@@ -7,18 +7,26 @@
 				},
 				{
 					"id": "parameters_metadata",
-					"title":"Metadata",
+					"title": "Metadata",
 					"fields": [
-						"project",
-						{"id":"parent_event_id",
-						"title": "expedition database"},
+            "project_group",
+						{
+							"id": "parent_event_id",
+							"title": "expedition database"
+						},
 						"ris_id",
-						{"id":"rightsholder",
-						"title":"institutions owning data"},
-						{"id":"people_responsible",
-						"title":"people responsible for the dataset"},
-						{"id":"people_collector",
-						"title": "person collecting the sample"},
+						{
+							"id": "rightsholder",
+							"title": "institutions owning data"
+						},
+						{
+							"id": "people_responsible",
+							"title": "people responsible for the dataset"
+						},
+						{
+							"id": "people_collector",
+							"title": "person collecting the sample"
+						},
 						"reference"
 					]
 				}
@@ -28,7 +36,7 @@
 			"title": "Time and place",
 			"fields": [{
 					"id": "parameters_time_and_place",
-					"title":"Time and place"
+					"title": "Time and place"
 				},
 				"use_list"
 			]
@@ -36,26 +44,33 @@
 			"title": "Base",
 			"fields": [{
 				"id": "parameters_base",
-				"title":"Base"
+				"title": "Base"
+			}]
+		},
+		{
+			"title": "Loggers",
+			"fields": [{
+				"id": "parameters_loggers",
+				"title": "Loggers"
 			}]
 		},
 		{
 			"title": "Birds",
 			"fields": [{
 				"id": "parameters_birds",
-				"title":"Birds"
+				"title": "Birds"
 			}]
 		}, {
 			"title": "Mammals",
 			"fields": [{
 				"id": "parameters_mammals",
-				"title":"Mammals"
+				"title": "Mammals"
 			}]
-		},{
+		}, {
 			"title": "Marine life",
 			"fields": [{
 				"id": "parameters_marine_life",
-				"title":"Marine life"
+				"title": "Marine life"
 			}]
 		},
 		{
@@ -92,10 +107,6 @@
 				{
 					"id": "updated_by",
 					"disabled": true
-				},
-				{
-					"id": "comment",
-					"title": "comment major changes to this entry"
 				}
 			]
 		}
