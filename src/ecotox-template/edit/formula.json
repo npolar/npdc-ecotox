@@ -31,7 +31,7 @@
 					]
 				}
 			]
-		},
+},
 		{
 			"title": "Time and place",
 			"fields": [{
@@ -40,7 +40,8 @@
 				},
 				"use_list"
 			]
-		}, {
+		},
+		{
 			"title": "Base",
 			"fields": [{
 				"id": "parameters_base",
