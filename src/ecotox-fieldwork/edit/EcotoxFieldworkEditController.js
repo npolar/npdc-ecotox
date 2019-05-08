@@ -9,12 +9,10 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
   $controller('NpolarEditController', { $scope: $scope });
 
-
   $scope.resource = EcotoxFieldwork;
-  console.log($scope.resource);
-  console.log("----------------");
+  //console.log($scope.resource);
 
-  //COnvert object to array
+  //Convert object to array
   function obj_to_arr(obj){
       let arr = [];
       let result = Object.keys(obj).map(function(key) {
@@ -28,7 +26,9 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
   let edit = function() {
      $scope.show().$promise.then((ecotoxFieldwork) => {
+        console.log("xxxxx");
         console.log($scope.document);
+        console.log("--xxxxx");
 
         var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
                console.log(full.parameters);
@@ -136,7 +136,7 @@ let obj = { "data_rows":fieldwork,
             "autocompletes":["my_own_field","my_own_field2"],
             "datefields":["event_date"]};
 
-
+console.log("yyyyyyy");
 //  tb.testComponent();
   tb.insertTable(obj);
 };
