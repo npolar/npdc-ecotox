@@ -26,8 +26,8 @@ var EcotoxTemplateShowController = function($controller, $routeParams,
   });
 
 
-  let show =  $scope.show().$promise.then((EcotoxTemplate) => {
-
+//  let show =  $scope.show().$promise.then((EcotoxTemplate) => {
+  $scope.show().$promise.then((EcotoxTemplate) => {
       //Overlay the map with lat,lng
       console.log($scope.document);
       $scope.mapOptions.coverage = [[[EcotoxTemplate.latitude,EcotoxTemplate.longitude],[EcotoxTemplate.latitude,EcotoxTemplate.longitude]]];

@@ -16,33 +16,68 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   function obj_to_arr(obj){
       let arr = [];
       let result = Object.keys(obj).map(function(key) {
-         arr.push(obj[key]);
+         if (obj[key] === true){
+             arr.push(key);
+         }
       });
-  console.log(arr);
-  console.log("---------");
   return arr;
   }
 
 
-  let edit = function() {
-     $scope.show().$promise.then((ecotoxFieldwork) => {
-        console.log("xxxxx");
-        console.log($scope.document);
-        console.log("--xxxxx");
+  let species_list = ["ursus maritimus", "vulpes lagopus",
+        "boreogadus saida","salvelinus alpinus","mallotus villosus",
+        "strongylocentrotus droebachiensis","hyas araneus","buccinum undatum",
+        "buccinum glaciale", "mya truncata",
+        "gymnacanthus tricuspis","myoxocephalus scorpius",
+        "phoca vitulina","pagophilus groenlandicus",
+        "cystophora cristata","pusa hispida",
+        "odobenus rosmarus","leptonychotes weddellii",
+        "orcinus orca","delphinapterus leucas", "monodon monoceros",
+        "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
+        "somateria mollissima","fratercula arctica","phalacrocorax aristotelis",
+        "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle"];
 
-        var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
-               console.log(full.parameters);
-               let heading = obj_to_arr(full.parameters);
-               //convert parameters object into array
-               console.log("full");
-        });
+  let matrix_list = ["egg","milk","whole blood","blood cell",
+        "plasma","serum","abdominal fat","subcutaneous fat",
+        "blubber","hair","feather","muscle","liver","brain",
+        "adrenal","whole animal","gonad",
+        "whole animal except lower part of foot",
+        "whole animal except closing muscle and siphon",
+        "digestive gland"];
 
-      //  $scope.save().$promise.then((ecotoxFieldwork) => {
-      //     console.log($scope.document);
-      //  });
-     });
-  };
-  edit();
+
+        $scope.show().$promise.then((ecotoxFieldwork) => {
+
+           console.log(ecotoxFieldwork);
+           let fieldwork = ecotoxFieldwork.entry;
+
+
+            //Get the header texts
+            var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
+               //Traverse object full to get all the parameters_ subobjects
+               let header = [];
+               let result = Object.keys(full).map(function(key) {
+                  //Check for empty object
+                  if ((full[key].constructor === Object)&&(key.startsWith('parameters_'))){
+                     //Header for database view
+                     header.push.apply(header, (obj_to_arr(full[key])));
+                  }
+                  });
+                  header.push('id');
+
+
+                  //Input object
+                  let obj = { "data_rows":fieldwork,
+                              "headings":header,
+                              "selectlist": {"species":species_list, "matrix":matrix_list},
+                              "autocompletes":["my_own_field","my_own_field2"],
+                              "datefields":["event_date"]};
+
+
+                  //  tb.testComponent();
+                    tb.insertTable(obj);
+            });
+});
 
 
 
@@ -51,94 +86,11 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
        console.log("full");
   }); */
 
-
-
 /*  var full = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
        console.log(full);
   });*/
 
-  //Testdata  template and fieldwork
-  let template =  [
-      "matrix",
-      "project",
-      "species",
-      "species_identification",
-      "label_name",
-      "comment",
-      "my_own_field",
-      "my_own_field2",
-      "event_date",
-      "id"
-  ];
 
-  let fieldwork = [[
-    "4568140a7f01462edc029e42ab040f01",
-    "feather",
-    "Kongsfjorden northern fulmar",
-    "fulmarus glacialis",
-    "77",
-    "6745232",
-    "test",
-    "test2",
-    "2019-02-01",
-    "dead"
-  ],
-  [
-    "4568140a7f01462edc029e42ab056e41",
-    "feather",
-    "Kongsfjorden northern fulmar",
-    "fulmarus glacialis",
-    "78",
-    "6745211",
-    "test0",
-    "test2",
-    "2019-09-01",
-    "Juvenile"
-  ],
-  [
-    "4568140a7f01462edc029e42ab056e41",
-    "egg",
-    "Kongsfjorden northern fulmar",
-    "fulmarus glacialis",
-    "79",
-    "4566432",
-    "test1",
-    "test2",
-    "2019-01-01",
-    ""
-  ]];
-
-let species_list = ["ursus maritimus", "vulpes lagopus",
-      "boreogadus saida","salvelinus alpinus","mallotus villosus",
-      "strongylocentrotus droebachiensis","hyas araneus","buccinum undatum",
-      "buccinum glaciale", "mya truncata",
-      "gymnacanthus tricuspis","myoxocephalus scorpius",
-      "phoca vitulina","pagophilus groenlandicus",
-      "cystophora cristata","pusa hispida",
-      "odobenus rosmarus","leptonychotes weddellii",
-      "orcinus orca","delphinapterus leucas", "monodon monoceros",
-      "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
-      "somateria mollissima","fratercula arctica","phalacrocorax aristotelis",
-      "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle"];
-
-let matrix_list = ["egg","milk","whole blood","blood cell",
-      "plasma","serum","abdominal fat","subcutaneous fat",
-      "blubber","hair","feather","muscle","liver","brain",
-      "adrenal","whole animal","gonad",
-      "whole animal except lower part of foot",
-      "whole animal except closing muscle and siphon",
-      "digestive gland"];
-
-//Input object
-let obj = { "data_rows":fieldwork,
-            "headings":template,
-            "selectlist": {"species":species_list, "matrix":matrix_list},
-            "autocompletes":["my_own_field","my_own_field2"],
-            "datefields":["event_date"]};
-
-console.log("yyyyyyy");
-//  tb.testComponent();
-  tb.insertTable(obj);
 };
 
 /*function createButton(context, func) {
