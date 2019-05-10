@@ -67,11 +67,15 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
                   //Input object
-                  let obj = { "data_rows":fieldwork,
-                              "headings":header,
+                  let obj = { "dataRows":fieldwork,
+                              "headers":header,
                               "selectlist": {"species":species_list, "matrix":matrix_list},
                               "autocompletes":["my_own_field","my_own_field2"],
-                              "datefields":["event_date"]};
+                              "datefields":["event_date"],
+                              "returnJson":[]
+                            };
+
+                  //console.log(obj);
 
 
                   //  tb.testComponent();
