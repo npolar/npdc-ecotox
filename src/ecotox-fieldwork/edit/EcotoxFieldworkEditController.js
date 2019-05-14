@@ -24,35 +24,13 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   }
 
 
-  let species_list = ["ursus maritimus", "vulpes lagopus",
-        "boreogadus saida","salvelinus alpinus","mallotus villosus",
-        "strongylocentrotus droebachiensis","hyas araneus","buccinum undatum",
-        "buccinum glaciale", "mya truncata",
-        "gymnacanthus tricuspis","myoxocephalus scorpius",
-        "phoca vitulina","pagophilus groenlandicus",
-        "cystophora cristata","pusa hispida",
-        "odobenus rosmarus","leptonychotes weddellii",
-        "orcinus orca","delphinapterus leucas", "monodon monoceros",
-        "bubo scandiacus","larus hyperboreus","uria lomvia","uria aalge","rissa tridactyla",
-        "somateria mollissima","fratercula arctica","phalacrocorax aristotelis",
-        "larus argentatus", "morus bassanus", "fulmarus glacialis", "alle alle"];
-
-  let matrix_list = ["egg","milk","whole blood","blood cell",
-        "plasma","serum","abdominal fat","subcutaneous fat",
-        "blubber","hair","feather","muscle","liver","brain",
-        "adrenal","whole animal","gonad",
-        "whole animal except lower part of foot",
-        "whole animal except closing muscle and siphon",
-        "digestive gland"];
-
-
         $scope.show().$promise.then((ecotoxFieldwork) => {
 
-           console.log(ecotoxFieldwork);
+           //Data rows
            let fieldwork = ecotoxFieldwork.entry;
 
 
-            //Get the header texts
+            //Extract the header texts
             var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
                //Traverse object full to get all the parameters_ subobjects
                let header = [];
@@ -65,21 +43,58 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                   });
                   header.push('id');
 
+                  //Internal autocomplete of additional fields
+                  let autocompletesInternal = [];
+                  for (var val of full.additional) {
+                       //Replace space with underscore
+                       let temp = (val.parameter_name);
+                       //Strip parameter_name for all chars except English letters, numbers, space and underscore
+                       autocompletesInternal.push(temp.replace(/[^a-zA-Z0-9_]+/,'_'));
+                  }
 
-                  //Input object
-                  let obj = { "dataRows":fieldwork,
-                              "headers":header,
-                              "selectlist": {"species":species_list, "matrix":matrix_list},
-                              "autocompletes":["my_own_field","my_own_field2"],
-                              "datefields":["event_date"],
-                              "returnJson":[]
-                            };
+
+                //Get select and date list
+                let selectlist = {};
+                let dateFields = [];
+                $scope.jsonSchema = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
+
+                        //Iterate through all schema keys containing enum and date-time
+                        //If key are in headers list, add key and options (enums) to select list
+                        //If key element contains format =  date-time, add it to the datelist
+                        for (var key in $scope.jsonSchema.properties.entry.items) {
+                              if  (($scope.jsonSchema.properties.entry.items.hasOwnProperty(key))) {
+                                       if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].enum)) {
+                                           selectlist[key] =  $scope.jsonSchema.properties.entry.items[key].enum;
+                                       } else if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].format == "date-time")) {
+                                            dateFields.push(key);
+                                       }
+                              }
+                        }
+
+
+
+
+                 //Input object
+                 let obj = { "dataRows":fieldwork,
+                            "headers":header,
+                            "selectlist": selectlist, //{"project_group":["MOSJ","thesis"]},
+                            "autocompletes": autocompletesInternal,
+                            "dateFields":dateFields,
+                            "saveJson":[]
+                 };
 
                   //console.log(obj);
 
 
                   //  tb.testComponent();
                     tb.insertTable(obj);
+                  //  $scope.$watch('obj.saveJson', function(save_obj) {
+                       console.log(obj);
+                  //     console.log("save");
+                  //  });
+
+                  });  //Fetch selects
+
             });
 });
 
