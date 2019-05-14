@@ -10,18 +10,18 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   $controller('NpolarEditController', { $scope: $scope });
 
   $scope.resource = EcotoxFieldwork;
-  //console.log($scope.resource);
 
   //Convert object to array
   function obj_to_arr(obj){
       let arr = [];
-      let result = Object.keys(obj).map(function(key) {
+      Object.keys(obj).map(function(key) {
          if (obj[key] === true){
              arr.push(key);
          }
       });
   return arr;
   }
+
 
 
         $scope.show().$promise.then((ecotoxFieldwork) => {
@@ -34,7 +34,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
             var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
                //Traverse object full to get all the parameters_ subobjects
                let header = [];
-               let result = Object.keys(full).map(function(key) {
+                 Object.keys(full).map(function(key) {
                   //Check for empty object
                   if ((full[key].constructor === Object)&&(key.startsWith('parameters_'))){
                      //Header for database view
@@ -65,7 +65,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                               if  (($scope.jsonSchema.properties.entry.items.hasOwnProperty(key))) {
                                        if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].enum)) {
                                            selectlist[key] =  $scope.jsonSchema.properties.entry.items[key].enum;
-                                       } else if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].format == "date-time")) {
+                                       } else if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].format === "date-time")) {
                                             dateFields.push(key);
                                        }
                               }
@@ -96,6 +96,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                   });  //Fetch selects
 
             });
+
+
 });
 
 
