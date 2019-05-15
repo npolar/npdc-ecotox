@@ -2,7 +2,7 @@
 
 var EcotoxFieldworkEditController = function($http, $scope, $location, $controller, $routeParams, EcotoxTemplate,
   EcotoxFieldwork, $filter, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
-  NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage, DBSearch) {
+  NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage, DBSearch, EcotoxFieldworkService) {
   'ngInject';
 
   var tb = require( '@srldl/edit-tabletest/js/edit-table.js');
@@ -10,6 +10,9 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   $controller('NpolarEditController', { $scope: $scope });
 
   $scope.resource = EcotoxFieldwork;
+
+
+
 
   //Convert object to array
   function obj_to_arr(obj){
@@ -41,8 +44,9 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                      header.push.apply(header, (obj_to_arr(full[key])));
                   }
                   });
-                  header.push('id');
 
+
+                  //If there is additional fields, add these also
                   //Internal autocomplete of additional fields
                   let autocompletesInternal = [];
                   for (var val of full.additional) {
@@ -50,8 +54,11 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                        let temp = (val.parameter_name);
                        //Strip parameter_name for all chars except English letters, numbers, space and underscore
                        autocompletesInternal.push(temp.replace(/[^a-zA-Z0-9_]+/,'_'));
+                       header.push(temp.replace(/[^a-zA-Z0-9_]+/,'_'));
                   }
 
+                  //Finally add id
+                  header.push('id');
 
                 //Get select and date list
                 let selectlist = {};
@@ -72,26 +79,27 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                         }
 
 
+                    EcotoxFieldworkService.excelObj =
+                                { "dataRows":fieldwork,
+                                  "headers":header,
+                                  "selectlist": selectlist, //{"project_group":["MOSJ","thesis"]},
+                                  "autocompletes": autocompletesInternal,
+                                  "dateFields":dateFields,
+                                  "saveJson":[],
+                                  "id": $scope.document.id
+                                };
+
+                     $scope.excelObj = EcotoxFieldworkService.excelObj;
+
+                      tb.insertTable(EcotoxFieldworkService.excelObj);
+                  //  console.log(EcotoxFieldworkService.excelObj);
+
+              /*      $scope.$watch(function(scope) { return scope.excelObj },
+                          function(newValue, oldValue) {
+                                console.log(newValue);  
+                          }, true); */
 
 
-                 //Input object
-                 let obj = { "dataRows":fieldwork,
-                            "headers":header,
-                            "selectlist": selectlist, //{"project_group":["MOSJ","thesis"]},
-                            "autocompletes": autocompletesInternal,
-                            "dateFields":dateFields,
-                            "saveJson":[]
-                 };
-
-                  //console.log(obj);
-
-
-                  //  tb.testComponent();
-                    tb.insertTable(obj);
-                  //  $scope.$watch('obj.saveJson', function(save_obj) {
-                       console.log(obj);
-                  //     console.log("save");
-                  //  });
 
                   });  //Fetch selects
 
@@ -102,26 +110,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
 
-/*  var full = DBSearch.get({search:res, link:'ecotox',link2:'template'}, function(){
-       console.log(full);
-       console.log("full");
-  }); */
-
-/*  var full = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
-       console.log(full);
-  });*/
-
-
 };
-
-/*function createButton(context, func) {
-   var button = document.createElement("input");
-   button.type = "button";
-   button.value = "im a button";
-   button.onclick = func;
-   context.appendChild(button);
-}*/
-
 
 
 module.exports = EcotoxFieldworkEditController;

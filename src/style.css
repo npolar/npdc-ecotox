@@ -39,3 +39,7 @@
       border: 1px solid #ccc;
       border-top: none;
   }
+
+  .edit_table {
+     border: 9px solid #ccc; 
+ }
