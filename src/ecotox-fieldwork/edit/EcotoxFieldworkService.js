@@ -13,7 +13,7 @@ var EcotoxFieldworkService = function() {
   };
       return {
           excelObj : excelObj
-      }
+      };
 
 };
 
