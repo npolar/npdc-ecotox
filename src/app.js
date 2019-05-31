@@ -16,7 +16,6 @@ npdcEcotoxApp.controller('EcotoxTemplateEditController', require('./ecotox-templ
 npdcEcotoxApp.factory('EcotoxTemplate', require('./ecotox-template/EcotoxTemplate.js'));
 npdcEcotoxApp.controller('EcotoxFieldworkSearchController', require('./ecotox-fieldwork/search/EcotoxFieldworkSearchController'));
 npdcEcotoxApp.controller('EcotoxFieldworkEditController', require('./ecotox-fieldwork/edit/EcotoxFieldworkEditController'));
-//npdcEcotoxApp.factory('EcotoxFieldwork', require('./ecotox-fieldwork/EcotoxFieldwork.js'));
 npdcEcotoxApp.factory('EcotoxFieldworkService', require('./ecotox-fieldwork/edit/EcotoxFieldworkService.js'));
 npdcEcotoxApp.service('DBSearch', require('./DBSearch.js'));
 npdcEcotoxApp.service('DBSearchQuery', require('./DBSearchQuery.js'));

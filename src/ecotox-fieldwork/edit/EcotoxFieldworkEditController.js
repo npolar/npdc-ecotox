@@ -7,6 +7,14 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
   let tb = require( '@srldl/edit-tabletest/js/edit-table.js');
 
+  $controller('NpolarEditController', { $scope: $scope });
+
+  //Input parameters
+  $scope.resource = EcotoxFieldwork;
+  $scope.security = NpolarApiSecurity;
+   //Auth
+  $scope.authorized = NpolarApiSecurity.isAuthorized('create', 'https:' + $scope.resource.path);
+
 
     //Convert object to array
     function obj_to_arr(obj){
@@ -20,9 +28,9 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
     }
 
     //Convert object to array
-    function view_fieldwork(fieldwork=[]){
+    function view_fieldwork(id,fieldwork=[]){
       //Extract the header texts
-     var full = DBSearch.get({search:$scope.document.id, link:'ecotox',link2:'template'}, function(){
+     var full = DBSearch.get({search:id, link:'ecotox',link2:'template'}, function(){
          //Traverse object full to get all the parameters_ subobjects
          let header = [];
            Object.keys(full).map(function(key) {
@@ -74,7 +82,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                             "autocompletes": autocompletesInternal,
                             "dateFields":dateFields,
                             "saveJson":[],
-                            "id": $scope.document.id
+                            "id": id
                           };
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
@@ -86,25 +94,20 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
       });
 
-    }
+    } //end function
 
-  $controller('NpolarEditController', { $scope: $scope });
 
-  //Input parameters
-  $scope.resource = EcotoxFieldwork;
-  $scope.security = NpolarApiSecurity;
-   //Auth
-  $scope.authorized = NpolarApiSecurity.isAuthorized('create', 'https:' + $scope.resource.path);
 
          //Fetch or save new
          $scope.show().$promise.then((ecotoxFieldwork) => {
               console.log("exists already");
               //Get data rows, call template for header
-              view_fieldwork(ecotoxFieldwork.entry);
+              view_fieldwork($scope.document.id, ecotoxFieldwork.entry);
 
           })  //If fieldwork is a new database not established previously
           .catch((err) => {
                if (err.body.error === "not_found") {
+
                   console.log("establish");
                   //Create new empty object
                   let user = NpolarApiSecurity.getUser();
@@ -124,7 +127,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                   };
 
                   //Create empty object, call header
-                  view_fieldwork(base);
+                  view_fieldwork(id, []);
 
                  //Save - use dev and prod!
                  let push_new = $resource('http://api-test.data.npolar.no/ecotox/fieldwork/'+id);
