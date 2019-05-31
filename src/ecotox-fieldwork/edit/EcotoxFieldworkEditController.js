@@ -15,6 +15,33 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
    //Auth
   $scope.authorized = NpolarApiSecurity.isAuthorized('create', 'https:' + $scope.resource.path);
 
+  //Save to database
+  function saveDb(jsonObj){
+    console.log(jsonObj);
+
+    //Create new empty object
+    let user = NpolarApiSecurity.getUser();
+    let id = $routeParams.id;
+    let dateobj = new Date();
+    let base  = {
+        "_id": id,
+        "id": id,
+        "schema": "http://api.npolar.no/schema/ecotox-fieldwork",
+        "lang": "en",
+        "ecotox_template": id,
+        "collection": "ecotox-fieldwork",
+        "created": dateobj.toISOString(),
+        "updated": dateobj.toISOString(),
+        "created_by": user.name,
+        "updated_by": user.name
+    };
+      console.log("start saving");
+
+    //Save - use dev and prod!
+//    let push_new = $resource('http://api-test.data.npolar.no/ecotox/fieldwork/'+id);
+//    push_new.save(base);
+  }
+
 
     //Convert object to array
     function obj_to_arr(obj){
@@ -87,8 +114,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
 
-                tb.insertTable(EcotoxFieldworkService.excelObj);
-            //  console.log(EcotoxFieldworkService.excelObj);
+              tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
+
 
             });  //Fetch selects
 
@@ -109,29 +136,9 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                if (err.body.error === "not_found") {
 
                   console.log("establish");
-                  //Create new empty object
-                  let user = NpolarApiSecurity.getUser();
-                  let id = $routeParams.id;
-                  let dateobj = new Date();
-                  let base  = {
-                    	"_id": id,
-                    	"id": id,
-                    	"schema": "http://api.npolar.no/schema/ecotox-fieldwork",
-                    	"lang": "en",
-                      "ecotox_template": id,
-                    	"collection": "ecotox-fieldwork",
-                    	"created": dateobj.toISOString(),
-                    	"updated": dateobj.toISOString(),
-                    	"created_by": user.name,
-                    	"updated_by": user.name
-                  };
-
                   //Create empty object, call header
-                  view_fieldwork(id, []);
+                   view_fieldwork(id, []);
 
-                 //Save - use dev and prod!
-                 let push_new = $resource('http://api-test.data.npolar.no/ecotox/fieldwork/'+id);
-                 push_new.save(base);
               }
           });
 
