@@ -9,37 +9,51 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
   $controller('NpolarEditController', { $scope: $scope });
 
-  //Input parameters
+  //Input parameters, security and auth
   $scope.resource = EcotoxFieldwork;
   $scope.security = NpolarApiSecurity;
-   //Auth
   $scope.authorized = NpolarApiSecurity.isAuthorized('create', 'https:' + $scope.resource.path);
+  //A global object to hold the full JSON schema from database
+  let ecotoxFieldworkEntry = {};
 
   //Save to database
   function saveDb(jsonObj){
     console.log(jsonObj);
-
-    //Create new empty object
-    let user = NpolarApiSecurity.getUser();
     let id = $routeParams.id;
+    let user = NpolarApiSecurity.getUser();
     let dateobj = new Date();
-    let base  = {
-        "_id": id,
-        "id": id,
-        "schema": "http://api.npolar.no/schema/ecotox-fieldwork",
-        "lang": "en",
-        "ecotox_template": id,
-        "collection": "ecotox-fieldwork",
-        "created": dateobj.toISOString(),
-        "updated": dateobj.toISOString(),
-        "created_by": user.name,
-        "updated_by": user.name
-    };
-      console.log("start saving");
+    //Save - use either dev or prod
+    let resource_str = 'http:' + npolarApiConfig.base + '/ecotox/fieldwork/'+id;
+    let push_new = $resource(resource_str);
 
-    //Save - use dev and prod!
-//    let push_new = $resource('http://api-test.data.npolar.no/ecotox/fieldwork/'+id);
-//    push_new.save(base);
+    //If base information does not exist, create an initial object
+    if (ecotoxFieldworkEntry === {}) {
+      ecotoxFieldworkEntry  = {
+          "_id": id,
+          "id": id,
+          "schema": "http://api.npolar.no/schema/ecotox-fieldwork",
+          "lang": "en",
+          "ecotox_template": id,
+          "collection": "ecotox-fieldwork",
+          "created": dateobj.toISOString(),
+          "updated": dateobj.toISOString(),
+          "created_by": user.name,
+          "updated_by": user.name
+      };
+      ecotoxFieldworkEntry.entry = jsonObj;
+
+
+    } else {
+      ecotoxFieldworkEntry.entry = jsonObj;
+      ecotoxFieldworkEntry.updated_by = user.name;
+      ecotoxFieldworkEntry.updated = dateobj.toISOString();
+      //Define save to be update/PUT
+      let push_new = $resource(resource_str, null,{'update': { method:'PUT' }});
+    }
+    //Save the entry to database
+    push_new.save(ecotoxFieldworkEntry);
+    console.log(ecotoxFieldworkEntry);
+    console.log("start saving");
   }
 
 
@@ -125,25 +139,22 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
 
-         //Fetch or save new
+         //Search database, fetch old entries or start a new, empty sheet
          $scope.show().$promise.then((ecotoxFieldwork) => {
-              console.log("exists already");
+              // Update global object with all entry infomation
+              ecotoxFieldworkEntry = ecotoxFieldwork;
+              console.log(ecotoxFieldworkEntry);
+              console.log("exists");
               //Get data rows, call template for header
               view_fieldwork($scope.document.id, ecotoxFieldwork.entry);
 
-          })  //If fieldwork is a new database not established previously
+          })  //If fieldwork is a new database, call returns error
           .catch((err) => {
                if (err.body.error === "not_found") {
-
-                  console.log("establish");
-                  //Create empty object, call header
-                   view_fieldwork(id, []);
-
+                  //Create empty object, call template for header
+                   view_fieldwork($routeParams.id, []);
               }
           });
-
-
-
 
 };
 
