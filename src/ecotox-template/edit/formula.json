@@ -45,9 +45,30 @@
 			"title": "Base",
 			"fields": [{
 				"id": "parameters_base",
-				"title": "Base"
-			}]
-		},
+				"title": "Base",
+				"fields": [
+					"species",
+					{
+					"id": "species_identification",
+					"title": "unique id for individual (species identification)"
+					},
+					"matrix",
+					"age",
+					"stage",
+					"sex",
+					"weight",
+					"girth",
+					"length",
+					"condition",
+					"morphology",
+					"subspecies",
+					{
+					"id": "no_samples_amount",
+					"title": "number of samples or amount, additional sample names, description etc"
+					},
+					"comment"
+			]}
+		]},
 		{
 			"title": "Loggers",
 			"fields": [{
