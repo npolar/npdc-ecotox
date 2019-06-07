@@ -11,7 +11,7 @@
   "private": true,
   "repository": "https://github.com/npolar/npdc-ecotox",
   "dependencies": {
-    "@srldl/edit-tabletest": "^1.0.1",
+    "@srldl/edit-tabletest": "^2.0.1",
     "datatables.net": "^1.10.19",
     "datatables.net-dt": "^1.10.19",
     "datatables.net-select": "^1.3.0",
