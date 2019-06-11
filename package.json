@@ -1,6 +1,6 @@
 {
   "name": "npdc-ecotox",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "All apps ecotox Norwegian Polar Institute",
   "main": "gulpfile.js",
   "scripts": {
