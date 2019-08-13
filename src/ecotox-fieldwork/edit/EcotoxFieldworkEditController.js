@@ -6,7 +6,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   EcotoxFieldworkDBSave) {
   'ngInject';
 
-  let tb = require( '@srldl/edit-tabletest/js/edit-table.js');
+  //let tb = require( '@srldl/edit-tabletest/js/edit-table.js');
+  let tb = require('@srldl/exceldb/index.js');
 
   $controller('NpolarEditController', { $scope: $scope });
 
@@ -65,7 +66,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
     function view_fieldwork(id,fieldwork=[]){
       //Extract the header texts
      var full = DBSearch.get({search:id, link:'ecotox',link2:'template'}, function(){
-         //Traverse object full to get all the parameters_ subobjects
+         //Traverse object full to get all the parameters_ subobject
          let header = [];
            Object.keys(full).map(function(key) {
             //Check for empty object
@@ -78,7 +79,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
             //If there is additional fields, add these also
             //Internal autocomplete of additional fields
-            let autocompletesInternal = [];
+            let autocompletesInternal = {};
             for (var val of full.additional) {
                  //Replace space with underscore
                  let temp = (val.parameter_name);
@@ -91,15 +92,22 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
             header.push('id');
 
           //Get select and date list
-          let selectlist = {};
-          let dateFields = [];
+          let selectlist = {};  //Array to hold select elements
+          let dateFields = [];  //Array to hold date fields
+          let header_tooltip = [];  //Array to hold tooltip
           $scope.jsonSchema = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
 
                   //Iterate through all schema keys containing enum and date-time
                   //If key are in headers list, add key and options (enums) to select list
                   //If key element contains format =  date-time, add it to the datelist
                   for (var key in $scope.jsonSchema.properties.entry.items) {
+
                         if  (($scope.jsonSchema.properties.entry.items.hasOwnProperty(key))) {
+                                //Insert header_tooltip
+                                if ((header).includes(key)){
+                                header_tooltip.push($scope.jsonSchema.properties.entry.items[key].description === undefined ? "" :  $scope.jsonSchema.properties.entry.items[key].description);
+                                }
+                                //Insert selectand date elements
                                  if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].enum)) {
                                      selectlist[key] =  $scope.jsonSchema.properties.entry.items[key].enum;
                                  } else if ((header).includes(key)&&($scope.jsonSchema.properties.entry.items[key].format === "date-time")) {
@@ -109,19 +117,25 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                   }
 
               //Create input object for library
+              console.log(header_tooltip);
+
+
               EcotoxFieldworkService.excelObj =
                           { "dataRows":fieldwork,
                             "headers":header,
                             "selectlist": selectlist, //{"project_group":["MOSJ","thesis"]},
+                            "headers_tooltip": header_tooltip,
                             "autocompletes": autocompletesInternal,
                             "dateFields":dateFields,
                             "saveJson":[],
-                            "id": id
+                            "id": id,
+                            "sanitize": true
                           };
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
+               console.log(EcotoxFieldworkService.excelObj);
+               tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 
-              tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 
 
             });  //Fetch selects

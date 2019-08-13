@@ -96,7 +96,7 @@
 			}]
 		},
 		{
-			"title": "Additional fields",
+			"title": "Additional",
 			"fields": [{
 				"id": "additional",
 				"title": "Add additional parameters to the list",
@@ -111,7 +111,19 @@
 						}
 					]
 				}
-			}]
+			},
+			{
+				"id": "database_owner",
+				"title": "Who has access to the database",
+				"items": {
+					"fields": [{
+							"id": "email",
+							"title": "email of those who should have access (= their login name)"
+						}
+					]
+				}
+			}
+		]
 		}, {
 			"title": "Edits",
 			"fields": [{
