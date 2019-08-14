@@ -19,7 +19,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
     //Save to database
     function saveDb(jsonObj){
-      console.log("saving");
       let id = $routeParams.id;
       let user = NpolarApiSecurity.getUser();
       let dateobj = new Date();
@@ -79,12 +78,13 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
             //If there is additional fields, add these also
             //Internal autocomplete of additional fields
-            let autocompletesInternal = {};
+            let autocomplete = {};
             for (var val of full.additional) {
                  //Replace space with underscore
                  let temp = (val.parameter_name);
                  //Strip parameter_name for all chars except English letters, numbers, space and underscore
-                 autocompletesInternal.push(temp.replace(/[^a-zA-Z0-9_]+/,'_'));
+                 //autocomplete - add new property to object
+                 autocomplete[temp.replace(/[^a-zA-Z0-9_]+/,'_')] = "internal";
                  header.push(temp.replace(/[^a-zA-Z0-9_]+/,'_'));
             }
 
@@ -117,15 +117,12 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                   }
 
               //Create input object for library
-              console.log(header_tooltip);
-
-
               EcotoxFieldworkService.excelObj =
-                          { "dataRows":fieldwork,
-                            "headers":header,
+                          { "dataRows": fieldwork,
+                            "headers": header,
                             "selectlist": selectlist, //{"project_group":["MOSJ","thesis"]},
                             "headers_tooltip": header_tooltip,
-                            "autocompletes": autocompletesInternal,
+                            "autocompletes": autocomplete,
                             "dateFields":dateFields,
                             "saveJson":[],
                             "id": id,
@@ -133,7 +130,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                           };
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
-               console.log(EcotoxFieldworkService.excelObj);
                tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 
 
