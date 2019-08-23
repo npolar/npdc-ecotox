@@ -44,12 +44,12 @@
 
     <p ng-if="(document.parameters_metadata.people_responsible == true)"><b> {{ 'Person(s) owning the data with institution affiliation' | t }}</b></p>
 
+     <p ng-if="(document.parameters_metadata.reference == true)"><b> {{ 'Reference' | t }}</b></p>
   </md-list>
 
    <md-list>
 
     <p ng-if="(document.parameters_time_and_place.event_date == true)" ><b>{{ 'Event date' | t }}</b></p>
-      <p ng-if="(document.parameters_time_and_place.placename == true)" ><b>{{ 'Placename' | t }}</b></p>
 
     <p ng-if="(document.parameters_time_and_place.placename == true)"><b> {{ 'Placename' | t }}</b> <span ng-if='(document.use_list).includes("placename")'><i>Fetch placenames from Svalbard placenames.</i></span></p>
 
@@ -68,6 +68,8 @@
     <p ng-if="document.parameters_base.species_identification == true"><b>{{ 'Species identification (bird ring, fox id, polar bear id etc)' | t }}</b></p>
 
     <p ng-if="(document.parameters_base.matrix == true)"><b>{{ 'Matrix' | t }} </b> {{jsonSchema.properties.entry.items.matrix.enum}}</p>
+
+      <p ng-if="(document.parameters_base.medium == true)"><b>{{ 'Medium' | t }} </b> {{jsonSchema.properties.entry.items.medium.enum}}</p>
 
     <p ng-if="document.parameters_base.age == true "><b>{{ 'Age' | t }}</b></p>
 
