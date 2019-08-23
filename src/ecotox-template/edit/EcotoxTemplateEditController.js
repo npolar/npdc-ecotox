@@ -40,13 +40,13 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
 
   try {
     init();
-
      // edit (or new) action
      $scope.edit();
 
   } catch (e) {
     NpolarMessage.error(e);
   }
+
 };
 
 module.exports = EcotoxTemplateEditController;

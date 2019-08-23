@@ -103,7 +103,7 @@
 				"items": {
 					"fields": [{
 							"id": "parameter_name",
-							"title": "parameter name (please use english letters only, no special characters beside space and underscore)"
+							"title": "parameter name (NOTE: please only use small letters 'a-z' and underscore '_')"
 						},
 						{
 							"id": "parameter_description",
