@@ -154,7 +154,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                             "id": id,
                             "sanitize": true
                           };
-
+  
                $scope.excelObj = EcotoxFieldworkService.excelObj;
                tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 

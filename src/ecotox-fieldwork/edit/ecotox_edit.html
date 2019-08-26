@@ -9,14 +9,15 @@
     Obj: <input type="text" ng-model="excelObj.dataRows[0].project_group">
     obj: <input type="text" ng-model="excelObj.headers[0]">
  -->
-
+ <div class="exceldb" style="width: 100%; overflow:auto; float:left; overflow-y:auto; height:85%;"> 
+<!-- <div class="exceldb" style="float:left; overflow-y:auto; height:88%;"> -->
  <button type="button" id="newBtn" >New</button>
  <button type="button" id="copyBtn">Copy</button>
  Add rows: <input type="text" name="addRows" id="addRows" size=2 maxlength=2>
  <button type="button" id="delBtn">Delete</button>
  <button type="button" id="saveBtn">Save</button>
 
-     <table id="edit_table" style="width: 100%; overflow:auto;">
+     <table id="edit_table">
          <thead>
              <tr id="header1">
              </tr>
@@ -24,3 +25,4 @@
          <tbody id="tbody1">
          </tbody>
      </table>
+</div>
