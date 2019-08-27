@@ -12,7 +12,7 @@
   "private": true,
   "repository": "https://github.com/npolar/npdc-ecotox",
   "dependencies": {
-    "@srldl/exceldb": "^0.9.0",
+    "@srldl/exceldb": "^1.0.0",
     "datatables.net": "^1.10.19",
     "datatables.net-dt": "^1.10.19",
     "datatables.net-select": "^1.3.0",
