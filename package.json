@@ -13,7 +13,7 @@
   "repository": "https://github.com/npolar/npdc-ecotox",
   "dependencies": {
     "@srldl/exceldb": "^1.0.0",
-    "npdc-common": "npolar/npdc-common#v4.11.2"
+    "npdc-common": "npolar/npdc-common#v4.11.3"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
