@@ -1,6 +1,6 @@
 {
   "name": "npdc-ecotox",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "All apps ecotox Norwegian Polar Institute",
   "main": "gulpfile.js",
   "style": "/node_modules/@srldl/exceldb/style.css",
