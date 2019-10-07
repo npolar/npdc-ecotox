@@ -34,7 +34,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
       }
       //Fetch last rev
       var ecotoxFieldwork = DBSearch.get({search:id, link:'ecotox',link2:'fieldwork'}, function(){
-
+                console.log(arrObj);
                 ecotoxFieldwork.entry = arrObj;
                 ecotoxFieldwork.updated_by = user.name;
                 ecotoxFieldwork.updated = dateobj.toISOString();
@@ -101,7 +101,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
             }
 
             //Finally add id
-            header.push('id');
+            header.push('database_sample_id');
 
           //Get select and date list
           let selectlist = {};  //Array to hold select elements
@@ -109,14 +109,14 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
           let header_tooltip = [];  //Array to hold tooltip
           $scope.jsonSchema = DBSearch.get({search:'ecotox-fieldwork.json', link:'schema',link2:''}, function(){
 
-              //Set headet_tooltip
+              //Set header_tooltip
               for (let s=0;s<header.length;s++){
                     if  ($scope.jsonSchema.properties.entry.items.hasOwnProperty(header[s])) {
                       header_tooltip.push($scope.jsonSchema.properties.entry.items[header[s]].description === undefined ? "" :  $scope.jsonSchema.properties.entry.items[header[s]].description);
                     }
               }
 
-              //header_tooltip might not be filled if there are additionalwon defined fields
+              //header_tooltip might not be filled if there are additional own defined fields
               //additional.parameter_description
               for (let k=header_tooltip.length;k<header.length;k++) {
                     for (let g=0;g<full.additional.length;g++) {
@@ -142,6 +142,12 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                         }
                   }
 
+                  console.log(id);
+                  console.log(header);
+
+                  
+                  console.log(fieldwork);
+
               //Create input object for library
               EcotoxFieldworkService.excelObj =
                           { "dataRows": fieldwork,
@@ -154,7 +160,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                             "id": id,
                             "sanitize": true
                           };
-  
+
                $scope.excelObj = EcotoxFieldworkService.excelObj;
                tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 
