@@ -8,7 +8,7 @@
 
 <npdc:contributions></npdc:contributions>
 
- <!-- <npdc:search feed="feed"></npdc:search> -->
+<!--  <npdc:search feed="feed"></npdc:search>  -->
  <div class="npdc-search">
    <md-content>
 <section>
@@ -16,9 +16,7 @@
           <md-list>
 
             <md-list-item class="md-2-line" ng-repeat="e in feed.entries" ng-href="fieldwork/{{ e.id }}">
-              <img class="md-avatar" ng-src={{icon(e)}} title="ID: {{ e.id }}" />
-
-            <!--     <img class="md-avatar" src="{{e.files[0].uri}}" alt="{{ e.files[0].filename }}"  title="ID: {{ e.id }}" />  -->
+            <img class="md-avatar" src="../assets/img/app-icons/48/ecotox.png"  alt="icon ecotox"  title="ID: {{ e.id }} />
 
               <div class="md-list-item-text">
                 <h3 class="md-headline">{{ e.title | t }}<em>「{{ e.updated_by | t }}」</em></h3>
