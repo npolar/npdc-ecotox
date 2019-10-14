@@ -16,7 +16,7 @@
           <md-list>
 
             <md-list-item class="md-2-line" ng-repeat="e in feed.entries" ng-href="fieldwork/{{ e.id }}">
-            <img class="md-avatar" src="../assets/img/app-icons/48/ecotox.png"  alt="icon ecotox"  title="ID: {{ e.id }} />
+            <img class="md-avatar" src="../assets/img/app-icons/48/ecotox.png"  alt="icon ecotox"  title="ID:{{ e.id }}" />
 
               <div class="md-list-item-text">
                 <h3 class="md-headline">{{ e.title | t }}<em>「{{ e.updated_by | t }}」</em></h3>

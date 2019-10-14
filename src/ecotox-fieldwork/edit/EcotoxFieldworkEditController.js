@@ -34,7 +34,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
       }
       //Fetch last rev
       var ecotoxFieldwork = DBSearch.get({search:id, link:'ecotox',link2:'fieldwork'}, function(){
-                console.log(arrObj);
                 ecotoxFieldwork.entry = arrObj;
                 ecotoxFieldwork.updated_by = user.name;
                 ecotoxFieldwork.updated = dateobj.toISOString();
@@ -141,12 +140,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                                  }
                         }
                   }
-
-                  console.log(id);
-                  console.log(header);
-
-                  
-                  console.log(fieldwork);
 
               //Create input object for library
               EcotoxFieldworkService.excelObj =
