@@ -17,6 +17,7 @@ require 'time'
 require 'date'
 require 'json'
 require 'oci8'
+require 'digest'
 require 'net-ldap'
 require 'rmagick'
 require 'simple-spreadsheet'
@@ -46,8 +47,12 @@ module Couch
      case inp
      when "NPI, NTNU, NMBU"
        inp = "NPI,NTNU,NMBU"
-     when  "NPI, Örebro"
-       inp = "NPI, Örebro University"
+     when "NPI, NMBU"
+       inp = "NPI,NMBU"
+     when  "NPI, Örebro University"
+       inp = "NPI, Örebro"
+     when "NPI,Univ of Windsor"
+       inp = "NPI, Univ of Windsor"
      else
        inp
      end
@@ -187,7 +192,7 @@ module Couch
   #Excel has a tendency to add .0 to what it thinks is a number
    def self.remove_zero(inp)
       if inp.include? ".0" then inp.slice! ".0" end
-        return inp
+        return inp.strip!
    end
 
    #sex field
@@ -1037,6 +1042,18 @@ module Couch
        :hash => @excel_file['hash']
      }
 
+
+
+     @files_fieldwork = {
+       :uri => s.cell(2,'AAP'),
+       :filename => s.cell(2,'AAQ'),
+       :title => "Original excel file",
+       :type => s.cell(2,'AAR'),
+       :length => (s.cell(2,'AAS')).to_i,
+       :hash => Digest::MD5.hexdigest(filename)
+     }
+
+
      @ecotox_fieldwork_entry_arr = []
 
 
@@ -1112,7 +1129,11 @@ module Couch
               percent_recovery = ''
         end
 
-        comment2 = checkExistence(s.cell(line,'V')) + " " + checkExistence(s.cell(line,'Z')) + teq
+        corrected_blank_contamination = checkExistence(s.cell(line,'Z'))
+        if (corrected_blank_contamination == 'NOT IN USE')
+              corrected_blank_contamination = ''
+        end
+        comment2 = checkExistence(s.cell(line,'V')) + " " + corrected_blank_contamination + teq
 
         #Iterate through all analytes
         header_arr.each do | key, value |
@@ -1230,6 +1251,7 @@ module Couch
           line += 1
      end #while line
 
+
      #Create the json structure object
      @ecotox_fieldwork = {
        :id => uuid_fieldwork,
@@ -1237,7 +1259,7 @@ module Couch
        :schema => 'http://api.npolar.no/schema/ecotox-fieldwork',
        :lang => 'no',
        :entry => @ecotox_fieldwork_entry_arr,
-       :files => [@files],
+       :files => (s.cell(2,'AAP')) == nil ? [@files] : [@files_fieldwork],
        :collection => 'ecotox-fieldwork',
        :created => timestamp,
        :updated => timestamp,
@@ -1248,6 +1270,7 @@ module Couch
 
     #puts @ecotox_fieldwork.to_json
     doc_fieldwork = @ecotox_fieldwork.to_json
+    puts doc_fieldwork
 
     #post entry
     begin
