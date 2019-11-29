@@ -81,16 +81,7 @@ module Couch
       return inp
     end
 
-    #Round off ms excel string which is a float
-=begin
-    def self.round_off(inp)
-       if inp.to_s !~ /\D\./
-         return inp.to_f.round(3).to_s
-       else
-         return inp
-       end
-    end
-=end
+
 
      #<loq everything detectable, but not quantificated
      #n.d. everything between zero and loq
@@ -126,7 +117,7 @@ module Couch
       if (inp != nil && inp.length > 0)
         case inp.downcase.strip!
         when "laurs hyperboreus"
-          inp=  "larus hyperboreus"
+          inp= "larus hyperboreus"
         when "larus maritimus"
           inp = "larus marinus"
         when "eukroma hamata"
@@ -135,10 +126,16 @@ module Couch
           inp = "parasagitta elegans"
         when "alka torda"
           inp = "alka torda"
+        when "Orcinus orca"
+          inp = "orcinus orca"
+        when "themisto libelulla"
+          inp = "themisto libellula"
+        when "gymnocanthus triscuspis"
+          inp = "gymnocanthus tricuspis"
         else
-          inp
+          inp.downcase.strip!
         end
-        return inp.downcase.strip!
+        return inp
       end
       return inp
     end
@@ -173,7 +170,9 @@ module Couch
      if inp == 'µg/g'
        return 'ng/g'
      end
+     return inp
    end
+
 
   #tarsus
    def self.return_empty(inp)
@@ -212,6 +211,8 @@ module Couch
         inp ="juvenile"
       when "J"
         inp ="juvenile"
+      when "u"
+        inp = "unknown"
       when "?"
         inp = "unknown"
       when "uncertain"
@@ -228,7 +229,7 @@ module Couch
 
      #Traverse @entry and remove all empty entries
      obj.each do | key, val |
-       if  val == "" || val == nil
+       if  val == "" || val == nil || val == 0.0
          obj.delete(key)
        end
      end
@@ -257,15 +258,35 @@ module Couch
     #Get date, convert to iso8601
     #Does not handle chars as month such as 6.june 2015 etc
     #Does not handle day in the middle, such as 04/23/2014 etc
-    def self.iso8601time(inputdate)
+    def self.iso8601time(inputdate2)
+       inputdate = inputdate2.to_s
+
        if (inputdate == '' || inputdate == nil ) then return '' end
-       #puts inputdate
+
+
+       #if only year
+       if (inputdate.length == 6 && inputdate[4..6]==".0") || (inputdate.length == 4)
+          dt = DateTime.new(inputdate[0..3].to_i, 1, 1, 12, 0, 0, 0)
+          return dt.to_time.utc.iso8601
+       end
+
+       #Convert separator into .
+       inputdate.gsub! '-', '.'
+       inputarr = inputdate.split('.')
+       if inputarr.length==2
+         inputarr.push('01')
+       end
+
+        dt = DateTime.new(inputarr[0].to_i, inputarr[1].to_i, inputarr[2].to_i, 12, 0, 0, 0)
+        return dt.to_time.utc.iso8601
+
 
        if (inputdate.include? (".*\\d.*"))
        a = (inputdate).to_s
 
+
        #Delimiter space, -, .,/
-       b = a.split(/\.|\s|\/|-/)
+       b = inputdate.split(/\.|\s|\/|-/)
         if (b[1] == '0') then b[1] = '01' end
          b.push('01','01')
 
@@ -285,7 +306,7 @@ module Couch
        end
              return dt.to_time.utc.iso8601
       end #if nil
-      return ''
+       return ''
     end
 
     #Check if a read value exists
@@ -1010,6 +1031,7 @@ module Couch
 
      #Get uuid fieldwork
      uuid_fieldwork = getUUID()
+     puts uuid_fieldwork
 
      @links = {
        :rel => 'data',
@@ -1042,8 +1064,6 @@ module Couch
        :hash => @excel_file['hash']
      }
 
-
-
      @files_fieldwork = {
        :uri => s.cell(2,'AAP'),
        :filename => s.cell(2,'AAQ'),
@@ -1059,20 +1079,29 @@ module Couch
 
      #Traverse rows
      while (line < (s.last_row).to_i + 1) && ((s.cell(line,'C') != nil) || ((s.cell(line,'G')!= nil)))
-           #puts line
+           #puts line.to_s + " line"
 
            database_sample_id2 = uuid_fieldwork + "-" + (line-1).to_s
            laboratory2 = laboratory(checkExistence(s.cell(line,'B')))
            date_report2 = iso8601time(checkExistence(s.cell(line,'M')))
            rightsholder2 = rightsholder(checkExistence(s.cell(line,'Q')))
-           people_responsible2 = people_responsible(checkExistence(s.cell(line,'W'))+ " " + checkExistence(s.cell(line,'X'))+ "," + checkExistence(s.cell(line,'Y')))
+           people_responsible2 = people_responsible(checkExistence(s.cell(line,'W'))+ " " + checkExistence(s.cell(line,'X'))+ " " + checkExistence(s.cell(line,'Y')))
            lab_report_id2 = (checkExistence(s.cell(line,'XD'))).to_s
            matrix2 = matrix(checkExistence(s.cell(line,'G')))
            species2 = species(s.cell(line,'C'))
            unit2 = unit(checkExistence(s.cell(line,'AB')))
            fat_percentage2 = checkExistence(s.cell(line,'K')).to_f
-           npi_sample_id2 = remove_zero(checkExistence(s.cell(line,'H')).to_s)
-           lab_sample_id2 = checkExistence(s.cell(line,'J')).to_s
+           #npi_sample_id2 = remove_zero(checkExistence(s.cell(line,'H')).to_s)
+           npi_sample_id2 = checkExistence(s.cell(line,'H')).to_s
+           lab_sample_id2 = (checkExistence(s.cell(line,'J'))).to_s
+
+           #scull or bill + head
+           scull2 = checkExistence(s.cell(line,'WK')).tr('*','')
+           if scull2 == ''
+            scull2 = checkExistence(s.cell(line,'YN')) +  checkExistence(s.cell(line,'WJ'))
+           end
+
+
 
          @ecotox_fieldwork_entry = {
           :database_sample_id => database_sample_id2,
@@ -1081,31 +1110,31 @@ module Couch
           :rightsholder => rightsholder2,
           :people_responsible => people_responsible2,
           :reference => s.cell(line,'ER'),
-          :event_date => s.cell(line,'L') == nil ? '' : iso8601time(checkExistence(s.cell(line,'L'))),
+          :event_date => iso8601time(checkExistence(s.cell(line,'L').to_s)),
           :placename => s.cell(line,'P'),
-          :latitude => checkExistence(s.cell(line,'N')),
-          :longitude => checkExistence(s.cell(line,'O')),
+          :latitude => checkExistence(s.cell(line,'N')).to_f,
+          :longitude => checkExistence(s.cell(line,'O')).to_f,
           :station_name => checkExistence(s.cell(line,'AAO')),
           :species => species2,
           :species_identification => checkExistence(s.cell(line,'I')),
           :matrix => matrix2,
           :age => checkExistence(s.cell(line,'D')) + " " + checkExistence(s.cell(line,'F')),
           :sex => sex(s.cell(line,'E')),
-          :weight => ((checkExistence(s.cell(line,'WH'))).tr('*','') +  (checkExistence(s.cell(line,'VZ'))).tr('*','')),
-          :girth => checkExistence(s.cell(line,'ZS')),
-          :length => checkExistence(s.cell(line,'VQ')).tr('*',''),
-          :condition => checkExistence(s.cell(line,'VF')),
+          :weight => (checkExistence(s.cell(line,'WH')).tr('*','')).to_f +  (checkExistence(s.cell(line,'VZ')).tr('*','')).to_f,
+          :girth => (checkExistence(s.cell(line,'ZS')).tr('*','')).to_f,
+          :length => (checkExistence(s.cell(line,'VQ')).tr('*','')).to_f,
+          :condition => checkExistence(s.cell(line,'WF')).tr('*',''),
           :comment => s.cell(line,'V'),
-          :tarsus => ((checkExistence(s.cell(line,'WL'))).tr('*','')),
-          :bill => (checkExistence(s.cell(line,'WJ'))).tr('*',''),
-          :bill_height => (checkExistence(s.cell(line,'XB'))).tr('*',''),
-          :scull => (checkExistence(s.cell(line,'YN')) +  checkExistence(s.cell(line,'WJ')) + checkExistence(s.cell(line,'WK'))).tr('*',''),
-          :wing => (checkExistence(s.cell(line,'WI')).tr('*','')),
-          :egg_width => checkExistence(s.cell(line,'AAJ')).tr('*',''),
-          :tusk_volume =>  checkExistence(s.cell(line,'VR')),
-          :tusk_length =>  checkExistence(s.cell(line,'VU')),
-          :tusk_girth =>  checkExistence(s.cell(line,'VV')),
-          :caudal_length => checkExistence(s.cell(line,'YR'))
+          :tarsus => (((checkExistence(s.cell(line,'WL'))).tr('*','')).to_f),
+          :bill => (((checkExistence(s.cell(line,'WJ'))).tr('*','')).to_f),
+          :bill_height => ((checkExistence(s.cell(line,'XC')).tr('*','')).to_f),
+          :scull => (scull2).to_f,
+          :wing => ((checkExistence(s.cell(line,'WI')).tr('*','')).to_f),
+          :egg_width => (checkExistence(s.cell(line,'AAJ')).tr('*','').to_f),
+          :tusk_volume =>  ((checkExistence(s.cell(line,'VR'))).to_f),
+          :tusk_length =>  ((checkExistence(s.cell(line,'VU'))).to_f),
+          :tusk_girth =>  ((checkExistence(s.cell(line,'VV'))).to_f),
+          :caudal_length => ((checkExistence(s.cell(line,'YR'))).to_f)
          }
 
          @ecotox_fieldwork_entry = removeEmpty(@ecotox_fieldwork_entry)
@@ -1124,7 +1153,7 @@ module Couch
               detection_limit = ''
         end
 
-        percent_recovery = checkExistence(s.cell(line,'AC'))
+        percent_recovery = checkExistence(s.cell(line,'AA'))
         if (percent_recovery == 'NOT IN USE')
               percent_recovery = ''
         end
@@ -1139,6 +1168,7 @@ module Couch
         header_arr.each do | key, value |
           analyte = (checkExistence(s.cell(line,"#{key}"))).to_s
 
+
           if (analyte.length > 0)
             analyte_arr = analyte.split("*")
 
@@ -1152,7 +1182,7 @@ module Couch
               :lang => 'no',
               :laboratory => laboratory2,
               :lab_report_id => lab_report_id2,
-              :date_report => s.cell(line,'M') == nil ? '' :date_report2,
+              :date_report =>iso8601time(checkExistence(s.cell(line,'M').to_s)),
               :rightsholder => rightsholder2,
               :people_responsible => people_responsible2,
               :matrix => matrix2,
@@ -1160,16 +1190,16 @@ module Couch
               :database_sample_id => database_sample_id2,
               :NPI_sample_id => npi_sample_id2,
               :lab_sample_id => lab_sample_id2,
-              :fat_percentage => fat_percentage2,
+              :fat_percentage => fat_percentage2.to_f,
               :unit => unit2,
               :comment => comment2,
               :analyte_category => "#{value[1]}",
               :analyte => "#{value[0]}",
               :wet_weight => wet_weight(checkExistence(analyte_arr[0])),
               :lipid_weight => s.cell(line,'VT'),
-              :detection_limit => detection_limit + checkExistence(analyte_arr[1]),
-              :recovery_percent => percent_recovery +  checkExistence(analyte_arr[2]),
-              :level_of_quantification => analyte_arr[3],
+              :detection_limit => ((detection_limit).to_f) + ((checkExistence(analyte_arr[1])).to_f),
+              :recovery_percent => ((percent_recovery).to_f) +  ((checkExistence(analyte_arr[2])).to_f),
+              :level_of_quantification => (analyte_arr[3].to_f),
               #:links => @links,
               :files => [@files],
               :collection => 'lab',
@@ -1182,12 +1212,13 @@ module Couch
 
             @lab_ecotox = removeEmpty(@lab_ecotox)
             doc_ecotox = @lab_ecotox.to_json
-            puts doc_ecotox
+            #puts doc_ecotox
 
             #post entry
             begin
              http = postToServer('https://' + host + '/lab/ecotox/'+uuid_ecotox,doc_ecotox,auth,user,password)
             ensure
+             #log "Error lab-ecotox" +line.to_s
              http.finish if http.started?
             end
 
@@ -1242,6 +1273,7 @@ module Couch
             begin
               http = postToServer('https://' + host + '/lab/biomarker/'+uuid_biomarker,doc_biomarker,auth,user,password)
             ensure
+              #puts "Error ecotox-biomarker" + line.to_s
               http.finish if http.started?
             end
           end #if
@@ -1270,12 +1302,13 @@ module Couch
 
     #puts @ecotox_fieldwork.to_json
     doc_fieldwork = @ecotox_fieldwork.to_json
-    puts doc_fieldwork
+    #puts doc_fieldwork
 
     #post entry
     begin
      http = postToServer('https://' + host + '/ecotox/fieldwork/'+uuid_fieldwork,doc_fieldwork,auth,user,password)
    ensure
+     #puts "error ecotox-fieldwork"
      http.finish if http.started?
    end
      FileUtils.mv 'leser/'+ filename, 'done/' + filename
