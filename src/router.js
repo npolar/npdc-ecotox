@@ -14,8 +14,11 @@ var router = function($routeProvider, $locationProvider) {
   }).when('/template/:id/edit', {
       template: '<npdc:formula></npdc:formula>',
       controller: 'EcotoxTemplateEditController'
+  }).when('/getdata', {
+    templateUrl: 'getdata/search.html',
+    controller: 'GetdataSearchController'
   }).when('/fieldwork/:id', {
-      redirectTo: '/fieldwork/:id/edit'
+        redirectTo: '/fieldwork/:id/edit'
   }).when('/fieldwork/:id/edit', {
         templateUrl: 'ecotox-fieldwork/edit/ecotox_edit.html',
         controller: 'EcotoxFieldworkEditController'

@@ -29,8 +29,8 @@ module Couch
     password = Couch::Config::PASSWORD4
     auth = Couch::Config::AUTH4
 
-    database = 'ecotox-fieldwork'
-    database2 = 'ecotox/fieldwork'
+    database = 'lab-ecotox'
+    database2 = 'lab/ecotox'
 
 
     #Set server database here
@@ -58,6 +58,8 @@ module Couch
         #@entry = (res2.body).inspect
         #Need to remove _rev
         @metadata.tap { |hs| hs.delete('_rev') }
+        puts id2
+
 
         url = 'https://api.npolar.no/'+ database2 +'/'+id2.to_s
         @uri = URI.parse(url)

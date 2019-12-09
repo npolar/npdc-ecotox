@@ -125,7 +125,7 @@ module Couch
         when "sagitta elegans"
           inp = "parasagitta elegans"
         when "alka torda"
-          inp = "alka torda"
+          inp = "alca torda"
         when "Orcinus orca"
           inp = "orcinus orca"
         when "themisto libelulla"
@@ -173,6 +173,17 @@ module Couch
      return inp
    end
 
+   #Check if a read value exists
+   def self.checkExistence_f(inp,round_no)
+      if inp == '' || inp == nil
+        return ''
+      else
+        fl = inp.to_f
+        fl_r = fl.round(round_no)
+        #puts fl
+        return fl_r
+      end
+   end
 
   #tarsus
    def self.return_empty(inp)
@@ -1101,8 +1112,6 @@ module Couch
             scull2 = checkExistence(s.cell(line,'YN')) +  checkExistence(s.cell(line,'WJ'))
            end
 
-
-
          @ecotox_fieldwork_entry = {
           :database_sample_id => database_sample_id2,
           :NPI_sample_id => npi_sample_id2,
@@ -1112,8 +1121,8 @@ module Couch
           :reference => s.cell(line,'ER'),
           :event_date => iso8601time(checkExistence(s.cell(line,'L').to_s)),
           :placename => s.cell(line,'P'),
-          :latitude => checkExistence(s.cell(line,'N')).to_f,
-          :longitude => checkExistence(s.cell(line,'O')).to_f,
+          :latitude => checkExistence(s.cell(line,'N')),
+          :longitude => checkExistence(s.cell(line,'O')),
           :station_name => checkExistence(s.cell(line,'AAO')),
           :species => species2,
           :species_identification => checkExistence(s.cell(line,'I')),

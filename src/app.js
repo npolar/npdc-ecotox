@@ -16,6 +16,8 @@ npdcEcotoxApp.controller('EcotoxTemplateEditController', require('./ecotox-templ
 npdcEcotoxApp.factory('EcotoxTemplate', require('./ecotox-template/EcotoxTemplate.js'));
 npdcEcotoxApp.controller('EcotoxFieldworkSearchController', require('./ecotox-fieldwork/search/EcotoxFieldworkSearchController'));
 npdcEcotoxApp.controller('EcotoxFieldworkEditController', require('./ecotox-fieldwork/edit/EcotoxFieldworkEditController'));
+npdcEcotoxApp.controller('GetdataSearchController', require('./getdata/GetdataSearchController.js'));
+npdcEcotoxApp.service('GetdataDBSearch', require('./getdata/GetdataDBSearch.js'));
 npdcEcotoxApp.factory('EcotoxFieldworkService', require('./ecotox-fieldwork/edit/EcotoxFieldworkService.js'));
 npdcEcotoxApp.factory('EcotoxFieldworkDBSave', require('./ecotox-fieldwork/edit/EcotoxFieldworkDBSave.js'));
 npdcEcotoxApp.service('DBSearch', require('./DBSearch.js'));
@@ -49,10 +51,10 @@ resources.forEach(service => {
 npdcEcotoxApp.config(require('./router'));
 
 npdcEcotoxApp.config(($httpProvider, npolarApiConfig) => {
-  //var autoconfig = new AutoConfig("development");
-  var autoconfig = new AutoConfig("production");
-   //autoconfig.base = '//api-test.data.npolar.no';
-  autoconfig.base = '//api.npolar.no';
+  var autoconfig = new AutoConfig("development");
+  //var autoconfig = new AutoConfig("production");
+   autoconfig.base = '//api-test.data.npolar.no';
+  //autoconfig.base = '//api.npolar.no';
 
   angular.extend(npolarApiConfig, autoconfig, { resources });
   console.debug("npolarApiConfig", npolarApiConfig);
