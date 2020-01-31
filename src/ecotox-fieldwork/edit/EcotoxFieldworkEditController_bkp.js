@@ -3,10 +3,8 @@
 var EcotoxFieldworkEditController = function($http, $scope, $location, $controller, $routeParams, EcotoxTemplate,
   EcotoxFieldwork, $filter, npdcAppConfig, chronopicService, fileFunnelService, NpolarLang, npolarApiConfig,
   NpolarApiSecurity, npolarCountryService, NpdcSearchService, NpolarMessage, DBSearch, DBSearchQuery, EcotoxFieldworkService, $resource,
-  EcotoxFieldworkDBSave, CSVService) {
+  EcotoxFieldworkDBSave) {
   'ngInject';
-
-
 
   //let tb = require( '@srldl/edit-tabletest/js/edit-table.js');
   let tb = require('@srldl/exceldb/index.js');
@@ -24,7 +22,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
       for (let i=jsonObj.dataRows.length-1;i>-1;i--){
         for (let j=0;j<jsonObj.dataRows[i].length-1;j++){
            if  ((jsonObj.dataRows[i][j] === '') || (jsonObj.dataRows[i][j] === 'unknown')){
-             //Want the not like version
            } else {
                return jsonObj;
            } //if
@@ -35,19 +32,15 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
     return jsonObj;
   }
 
-
    //Save to database
    function saveDb(jsonObj){
         console.log("save");
+        console.log(jsonObj);
 
-        //Clean the array for empty rows
         let jsonObj_cleaned = checkIfRowEmpty(jsonObj);
         console.log(jsonObj_cleaned);
-        CSVService.entryObject = jsonObj_cleaned.dataRows;
 
-        //Fetch already stored rows - add additional values.
-
-        //let ecotoxFieldworkEntry = new Object();
+      //let ecotoxFieldworkEntry = new Object();
         let arrObj = [];
         let obj;
         for (let i=0;i<jsonObj_cleaned.dataRows.length;i++){
@@ -66,15 +59,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
           }
         //  arrObj.push(obj);
         }
-        //If obj.event is csvBtn, create CSV
-      //  if (jsonObj_cleaned.event === 'csvBtn'){
-
-
-
-
-           //$window.open('fieldwork/csv');
-
-      //  }
    }
 
     //Convert object to array
@@ -165,8 +149,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
               //Used in npm packet exceldb as database_sample_id
               fieldwork.database_sample_id = id.substring(0, id.length-2);
               delete fieldwork.database_sample_id_base;
-              //Also delete the fieldwork properties that should not be displayed
-              //delete fieldwork.schema;
 
               EcotoxFieldworkService.excelObj =
                           { "dataRows": fieldwork,
@@ -183,8 +165,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
-               CSVService.entryObject = EcotoxFieldworkService.excelObj;
-
+               console.log("excelobj");
+               console.log($scope.excelObj);
                tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 
             });  //Fetch selects

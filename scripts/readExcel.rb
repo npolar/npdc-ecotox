@@ -81,11 +81,33 @@ module Couch
       return inp
     end
 
+    #Round to three decimals
+    def self.round_off(inp)
+      if (inp != nil && inp != '')
+        inp_f = inp.to_f
+        return ((inp_f*1000).round)/1000.0
+      end
+    return inp
+    end
 
+    #Sometimes excel mistakenly adds .0 to a number
+    def self.remove_dot_zero(inp)
+       #In case there is more than 2 chars, get the last two ones
+       ending = inp.split(//).last(2).join
+       if ending == '.0'
+         return inp[0, inp.length() - 2]
+       end
+       return inp
+    end
+
+    #Check if string is valid float
+    def self.valid_float?(inp)
+      !!Float(inp) rescue false
+    end
 
      #<loq everything detectable, but not quantificated
      #n.d. everything between zero and loq
-    def self.wet_weight(inp)
+    def self.analyte_weight(inp, lipid_weight)
       case inp
       when "n.q"
         inp = "<loq"
@@ -108,9 +130,18 @@ module Couch
       when "lod"
         inp = "<loq"
       else
-        inp
+        if valid_float?(inp)
+          inp = (round_off(inp)).to_s
+        else
+          inp
+        end
       end
-      return inp
+      #Wet weight column
+      if  lipid_weight != nil
+        return lipid_weight
+      else
+        return inp
+      end
     end
 
     def self.species(inp)
@@ -351,7 +382,7 @@ module Couch
     'AE'=> ['a_HCH',"pesticides and industrial by products"],
     'AF'=> ['b_HCH',"pesticides and industrial by products"],
     'AG'=> ['g_HCH',"pesticides and industrial by products"],
-    'AF'=> ['heptachlor',"pesticides and industrial by products"],
+    'AH'=> ['heptachlor',"pesticides and industrial by products"],
     'AI'=> ['oxy_CHL',"pesticides and industrial by products"],
     'AJ'=> ['t_CHL',"pesticides and industrial by products"],
     'AK'=> ['c_CHL',"pesticides and industrial by products"],
@@ -962,7 +993,7 @@ module Couch
    'YV'=> ['BdPhP',"organophosphates (OP)"],
    'YW'=> ['TPP',"organophosphates (OP)"],
    'YX'=> ['TnBP',"organophosphates (OP)"],
-   'YY'=> ['ToCrP',"organophosphates (OP)"],
+   'YY'=> ['ToCrP',"organophosphates (OP)"],  #TCP
    'YZ'=> ['EHDP',"organophosphates (OP)"],
    'ZA'=> ['TXP',"organophosphates (OP)"],
    'ZB'=> ['TIPPP',"organophosphates (OP)"],
@@ -1044,14 +1075,6 @@ module Couch
      uuid_fieldwork = getUUID()
      puts uuid_fieldwork
 
-     @links = {
-       :rel => 'data',
-       :href => "https://api.npolar.no/ecotox/fieldwork/" + uuid_fieldwork,
-       :title => "fieldwork",
-       :hreflang => "no",
-       :type => "application/json"
-     }
-
 
      #Fetch a UUID from couchdb
      link = 'https://' + host + '/ecotox/excel/'+ s.cell(2,'R')
@@ -1069,7 +1092,7 @@ module Couch
      @files = {
        :uri => s.cell(2,'R'),
        :filename => s.cell(2,'S'),
-       :title => "Original excel file",
+       :title => "Original lab (and fieldwork) file",
        :type => s.cell(2,'T'),
        :length => (s.cell(2,'U')).to_i,
        :hash => @excel_file['hash']
@@ -1078,21 +1101,29 @@ module Couch
      @files_fieldwork = {
        :uri => s.cell(2,'AAP'),
        :filename => s.cell(2,'AAQ'),
-       :title => "Original excel file",
+       :title => "Original fieldwork file",
        :type => s.cell(2,'AAR'),
        :length => (s.cell(2,'AAS')).to_i,
        :hash => Digest::MD5.hexdigest(filename)
      }
 
-
      @ecotox_fieldwork_entry_arr = []
-
 
      #Traverse rows
      while (line < (s.last_row).to_i + 1) && ((s.cell(line,'C') != nil) || ((s.cell(line,'G')!= nil)))
            #puts line.to_s + " line"
 
            database_sample_id2 = uuid_fieldwork + "-" + (line-1).to_s
+
+           @links = {
+             :rel => 'data',
+             :href => "https://api.npolar.no/ecotox/fieldwork/" + database_sample_id2,
+             :title => "fieldwork",
+             :hreflang => "no",
+             :type => "application/json"
+           }
+
+
            laboratory2 = laboratory(checkExistence(s.cell(line,'B')))
            date_report2 = iso8601time(checkExistence(s.cell(line,'M')))
            rightsholder2 = rightsholder(checkExistence(s.cell(line,'Q')))
@@ -1101,7 +1132,7 @@ module Couch
            matrix2 = matrix(checkExistence(s.cell(line,'G')))
            species2 = species(s.cell(line,'C'))
            unit2 = unit(checkExistence(s.cell(line,'AB')))
-           fat_percentage2 = checkExistence(s.cell(line,'K')).to_f
+           fat_percentage2 = round_off(checkExistence(s.cell(line,'K')))
            #npi_sample_id2 = remove_zero(checkExistence(s.cell(line,'H')).to_s)
            npi_sample_id2 = checkExistence(s.cell(line,'H')).to_s
            lab_sample_id2 = (checkExistence(s.cell(line,'J'))).to_s
@@ -1112,8 +1143,12 @@ module Couch
             scull2 = checkExistence(s.cell(line,'YN')) +  checkExistence(s.cell(line,'WJ'))
            end
 
-         @ecotox_fieldwork_entry = {
-          :database_sample_id => database_sample_id2,
+         @ecotox_fieldwork = {
+          :id => database_sample_id2,
+          :_id => database_sample_id2,
+          :schema => 'http://api.npolar.no/schema/ecotox-fieldwork',
+          :lang => 'no',
+          :database_sample_id_base => uuid_fieldwork,
           :NPI_sample_id => npi_sample_id2,
           :project_group => s.cell(line,'A'),
           :rightsholder => rightsholder2,
@@ -1121,37 +1156,52 @@ module Couch
           :reference => s.cell(line,'ER'),
           :event_date => iso8601time(checkExistence(s.cell(line,'L').to_s)),
           :placename => s.cell(line,'P'),
-          :latitude => checkExistence(s.cell(line,'N')),
-          :longitude => checkExistence(s.cell(line,'O')),
+          :latitude => round_off(checkExistence(s.cell(line,'N'))),
+          :longitude => round_off(checkExistence(s.cell(line,'O'))),
           :station_name => checkExistence(s.cell(line,'AAO')),
           :species => species2,
-          :species_identification => checkExistence(s.cell(line,'I')),
+          :species_identification => remove_dot_zero(checkExistence(s.cell(line,'I'))),
           :matrix => matrix2,
           :age => checkExistence(s.cell(line,'D')) + " " + checkExistence(s.cell(line,'F')),
           :sex => sex(s.cell(line,'E')),
-          :weight => (checkExistence(s.cell(line,'WH')).tr('*','')).to_f +  (checkExistence(s.cell(line,'VZ')).tr('*','')).to_f,
-          :girth => (checkExistence(s.cell(line,'ZS')).tr('*','')).to_f,
-          :length => (checkExistence(s.cell(line,'VQ')).tr('*','')).to_f,
+          :weight => round_off((checkExistence(s.cell(line,'WH')).tr('*','')) +  (checkExistence(s.cell(line,'VZ')).tr('*',''))),
+          :girth => round_off(checkExistence(s.cell(line,'ZS')).tr('*','')),
+          :length => round_off(checkExistence(s.cell(line,'VQ')).tr('*','')),
           :condition => checkExistence(s.cell(line,'WF')).tr('*',''),
           :comment => s.cell(line,'V'),
-          :tarsus => (((checkExistence(s.cell(line,'WL'))).tr('*','')).to_f),
-          :bill => (((checkExistence(s.cell(line,'WJ'))).tr('*','')).to_f),
-          :bill_height => ((checkExistence(s.cell(line,'XC')).tr('*','')).to_f),
-          :scull => (scull2).to_f,
-          :wing => ((checkExistence(s.cell(line,'WI')).tr('*','')).to_f),
-          :egg_width => (checkExistence(s.cell(line,'AAJ')).tr('*','').to_f),
-          :tusk_volume =>  ((checkExistence(s.cell(line,'VR'))).to_f),
-          :tusk_length =>  ((checkExistence(s.cell(line,'VU'))).to_f),
-          :tusk_girth =>  ((checkExistence(s.cell(line,'VV'))).to_f),
-          :caudal_length => ((checkExistence(s.cell(line,'YR'))).to_f)
-         }
+          :tarsus => round_off((checkExistence(s.cell(line,'WL'))).tr('*','')),
+          :bill => round_off((checkExistence(s.cell(line,'WJ'))).tr('*','')),
+          :bill_height => round_off(checkExistence(s.cell(line,'XC')).tr('*','')),
+          :scull => round_off(scull2),
+          :wing => round_off(checkExistence(s.cell(line,'WI')).tr('*','')),
+          :egg_width => round_off(checkExistence(s.cell(line,'AAJ')).tr('*','')),
+          :tusk_volume =>  round_off(checkExistence(s.cell(line,'VR'))),
+          :tusk_length =>  round_off(checkExistence(s.cell(line,'VU'))),
+          :tusk_girth =>  round_off(checkExistence(s.cell(line,'VV'))),
+          :caudal_length => round_off(checkExistence(s.cell(line,'YR'))),
+          :files => (s.cell(2,'AAP')) == nil ? [@files] : [@files_fieldwork],
+          :collection => 'ecotox-fieldwork',
+          :created => timestamp,
+          :updated => timestamp,
+          :created_by => user,
+          :updated_by => user
+        }
 
-         @ecotox_fieldwork_entry = removeEmpty(@ecotox_fieldwork_entry)
+        @ecotox_fieldwork = removeEmpty(@ecotox_fieldwork)
 
-         #puts @ecotox_fieldwork_entry
+        #puts @ecotox_fieldwork.to_json
+        doc_fieldwork = @ecotox_fieldwork.to_json
+        #puts doc_fieldwork
 
-         #Put all entries in a large array
-         @ecotox_fieldwork_entry_arr.push(@ecotox_fieldwork_entry)
+        #post entry
+        begin
+         http = postToServer('https://' + host + '/ecotox/fieldwork/'+database_sample_id2,doc_fieldwork,auth,user,password)
+       ensure
+         #puts "error ecotox-fieldwork"
+         http.finish if http.started?
+       end
+
+
 
          #if existing, TEQ should be added to comment
          teq = checkExistence(s.cell(line,'YK'))
@@ -1170,7 +1220,10 @@ module Couch
         corrected_blank_contamination = checkExistence(s.cell(line,'Z'))
         if (corrected_blank_contamination == 'NOT IN USE')
               corrected_blank_contamination = ''
+        elsif (corrected_blank_contamination != nil)
+              corrected_blank_contamination = "Corrected blank contamination:" + corrected_blank_contamination
         end
+
         comment2 = checkExistence(s.cell(line,'V')) + " " + corrected_blank_contamination + teq
 
         #Iterate through all analytes
@@ -1197,18 +1250,17 @@ module Couch
               :matrix => matrix2,
               :species => species2,
               :database_sample_id => database_sample_id2,
-              :NPI_sample_id => npi_sample_id2,
-              :lab_sample_id => lab_sample_id2,
-              :fat_percentage => fat_percentage2.to_f,
+              :NPI_sample_id => remove_dot_zero(npi_sample_id2),
+              :lab_sample_id => remove_dot_zero(lab_sample_id2),
+              :fat_percentage => round_off(fat_percentage2),
               :unit => unit2,
               :comment => comment2,
               :analyte_category => "#{value[1]}",
               :analyte => "#{value[0]}",
-              :wet_weight => wet_weight(checkExistence(analyte_arr[0])),
-              :lipid_weight => s.cell(line,'VT'),
-              :detection_limit => ((detection_limit).to_f) + ((checkExistence(analyte_arr[1])).to_f),
-              :recovery_percent => ((percent_recovery).to_f) +  ((checkExistence(analyte_arr[2])).to_f),
-              :level_of_quantification => (analyte_arr[3].to_f),
+              :analyte_weight => analyte_weight(checkExistence(analyte_arr[0]),(s.cell(line,'VT'))),
+              :detection_limit => round_off(detection_limit + (checkExistence(analyte_arr[1]))),
+              :recovery_percent => round_off(percent_recovery +  checkExistence(analyte_arr[2])),
+              :level_of_quantification => round_off(analyte_arr[3]),
               #:links => @links,
               :files => [@files],
               :collection => 'lab',
@@ -1293,37 +1345,10 @@ module Couch
      end #while line
 
 
-     #Create the json structure object
-     @ecotox_fieldwork = {
-       :id => uuid_fieldwork,
-       :_id => uuid_fieldwork,
-       :schema => 'http://api.npolar.no/schema/ecotox-fieldwork',
-       :lang => 'no',
-       :entry => @ecotox_fieldwork_entry_arr,
-       :files => (s.cell(2,'AAP')) == nil ? [@files] : [@files_fieldwork],
-       :collection => 'ecotox-fieldwork',
-       :created => timestamp,
-       :updated => timestamp,
-       :created_by => user,
-       :updated_by => user
-     }
 
-
-    #puts @ecotox_fieldwork.to_json
-    doc_fieldwork = @ecotox_fieldwork.to_json
-    #puts doc_fieldwork
-
-    #post entry
-    begin
-     http = postToServer('https://' + host + '/ecotox/fieldwork/'+uuid_fieldwork,doc_fieldwork,auth,user,password)
-   ensure
-     #puts "error ecotox-fieldwork"
-     http.finish if http.started?
-   end
      FileUtils.mv 'leser/'+ filename, 'done/' + filename
 
   end #file
 end #file not match
-  end
-  #http.finish
+  end #http.finish
 end

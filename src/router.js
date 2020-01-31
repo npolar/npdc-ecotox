@@ -5,7 +5,6 @@ var router = function($routeProvider, $locationProvider) {
 
   $locationProvider.html5Mode(true).hashPrefix('!');
 
-
   $routeProvider.when('/', {
     redirectTo: '/fieldwork'
   }).when('/template/:id', {
@@ -17,11 +16,14 @@ var router = function($routeProvider, $locationProvider) {
   }).when('/getdata', {
     templateUrl: 'getdata/search.html',
     controller: 'GetdataSearchController'
+  }).when('/fieldwork/csv', {
+    templateUrl: 'ecotox-fieldwork/ecotox_csv.html',
+    controller: 'EcotoxFieldworkCSVController'
   }).when('/fieldwork/:id', {
-        redirectTo: '/fieldwork/:id/edit'
+    redirectTo: '/fieldwork/:id/edit'
   }).when('/fieldwork/:id/edit', {
-        templateUrl: 'ecotox-fieldwork/edit/ecotox_edit.html',
-        controller: 'EcotoxFieldworkEditController'
+    templateUrl: 'ecotox-fieldwork/edit/ecotox_edit.html',
+    controller: 'EcotoxFieldworkEditController'
   }).when('/template', {
     templateUrl: 'ecotox-template/search/search.html',
     controller: 'EcotoxTemplateSearchController'

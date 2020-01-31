@@ -1,0 +1,32 @@
+
+<h1><b>CSV<b></h1>
+<p><a href="/ecotox/fieldwork">{{ 'Back' | t }}</a></p>
+
+<div ng-controller="EcotoxFieldworkCSVController">
+
+<span ng-repeat="entry in entries.headers">
+ {{entry}} |
+</span>
+<br />
+<span ng-repeat="entry_row in entries.dataRows">
+
+  <span ng-repeat="header in entries.headers">
+       <span ng-if="(entry_row.hasOwnProperty(header)) == false">
+           |
+       </span>
+       <span ng-repeat="(key,val) in entry_row">
+         <span ng-if="header == key">
+            {{val}} |
+         </span>
+       </span> <!--entry_row -->
+  </span> <!--header -->
+<br/>
+</span> <!-- entries.dataRows -->
+
+
+
+<!--
+<p ng-repeat="entry in entries">
+{{ entry.header }} | {{ entry.header }} | {{ entry.species }} </p> -->
+
+<!-- </div> -->

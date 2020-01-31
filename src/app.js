@@ -16,12 +16,14 @@ npdcEcotoxApp.controller('EcotoxTemplateEditController', require('./ecotox-templ
 npdcEcotoxApp.factory('EcotoxTemplate', require('./ecotox-template/EcotoxTemplate.js'));
 npdcEcotoxApp.controller('EcotoxFieldworkSearchController', require('./ecotox-fieldwork/search/EcotoxFieldworkSearchController'));
 npdcEcotoxApp.controller('EcotoxFieldworkEditController', require('./ecotox-fieldwork/edit/EcotoxFieldworkEditController'));
+npdcEcotoxApp.controller('EcotoxFieldworkCSVController', require('./ecotox-fieldwork/EcotoxFieldworkCSVController'));
 npdcEcotoxApp.controller('GetdataSearchController', require('./getdata/GetdataSearchController.js'));
 npdcEcotoxApp.service('GetdataDBSearch', require('./getdata/GetdataDBSearch.js'));
 npdcEcotoxApp.factory('EcotoxFieldworkService', require('./ecotox-fieldwork/edit/EcotoxFieldworkService.js'));
 npdcEcotoxApp.factory('EcotoxFieldworkDBSave', require('./ecotox-fieldwork/edit/EcotoxFieldworkDBSave.js'));
 npdcEcotoxApp.service('DBSearch', require('./DBSearch.js'));
 npdcEcotoxApp.service('DBSearchQuery', require('./DBSearchQuery.js'));
+npdcEcotoxApp.service('CSVService', require('./ecotox-fieldwork/edit/CSVService.js'));
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [
@@ -35,8 +37,6 @@ var resources = [
   {'path': '/ecotox/template', 'resource': 'EcotoxTemplateResource'},
   {'path': '/ecotox/template', 'resource': 'EcotoxTemplate'},
   {'path': '/ecotox/fieldwork', 'resource': 'EcotoxFieldwork'}
-
-
 ];
 
 
