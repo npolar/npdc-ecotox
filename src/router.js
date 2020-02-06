@@ -16,7 +16,7 @@ var router = function($routeProvider, $locationProvider) {
   }).when('/getdata', {
     templateUrl: 'getdata/search.html',
     controller: 'GetdataSearchController'
-  }).when('/fieldwork/csv', {
+  }).when('/fieldwork/:id/csv', {
     templateUrl: 'ecotox-fieldwork/ecotox_csv.html',
     controller: 'EcotoxFieldworkCSVController'
   }).when('/fieldwork/:id', {
