@@ -5,19 +5,16 @@ function EcotoxTemplate( $q, EcotoxTemplateResource) {
 
 
   EcotoxTemplateResource.create = function() {
+      let schema = 'http://api.npolar.no/schema/ecotox-template';
       let lang = 'en';
       let collection = "ecotox-template";
-      let matrix = { "needed": true, "once": true};
-      let event_date = {"needed": true, "once": false,"use_list":true};
-      let latitude = {"needed": true, "once": false, "use_list":true};
-      let longitude = {"needed": true, "once": false, "use_list":true};
-      let placename = {"needed": true, "once": false, "use_list":true};
-      let people_responsible = {"needed": true, "once": true};
-      let ecotox_lab = {"needed": true, "once": false};
-      let rightsholder = {"needed": true, "once": true};
-      let species = {"needed": true, "once": false};
-      let schema = 'http://api.npolar.no/schema/ecotox-template';
-      let e = {lang,collection,schema,matrix,event_date,latitude,longitude,placename,people_responsible,ecotox_lab,rightsholder,species};
+    /*  let parameters_metadata =
+      { rightsholder:true,people_responsible:true};
+      let parameters_time_and_place =
+      { event_date:true, placename:true, latitude:true,longitude:true };
+      let parameters_base = {species:true }; */
+
+      let e = {lang,collection,schema};
       console.debug(e);
       return e;
 
