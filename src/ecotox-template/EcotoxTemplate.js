@@ -1,27 +1,39 @@
 'use strict';
 
-function EcotoxTemplate( $q, EcotoxTemplateResource) {
+function EcotoxTemplate(EcotoxTemplateResource) {
   'ngInject';
 
+  let schema = 'http://api.npolar.no/schema/ecotox-template';
 
-  EcotoxTemplateResource.create = function() {
-      let schema = 'http://api.npolar.no/schema/ecotox-template';
+  return Object.assign(EcotoxTemplateResource, {
+
+    schema,
+
+  create: function() {
       let lang = 'en';
       let collection = "ecotox-template";
-    /*  let parameters_metadata =
-      { rightsholder:true,people_responsible:true};
-      let parameters_time_and_place =
-      { event_date:true, placename:true, latitude:true,longitude:true };
-      let parameters_base = {species:true }; */
+      let parameters_metadata = {
+	         "rightsholder": true,
+	         "people_responsible": true
+      };
+      let parameters_time_and_place = {
+	         "event_date": true,
+	         "placename": true,
+	         "latitude": true,
+	         "longitude": true
+      };
+      let parameters_base = {
+	       "species": true
+      };
 
-      let e = {lang,collection,schema};
-      console.debug(e);
-      return e;
+      let p = {lang,collection,schema,parameters_metadata,parameters_time_and_place,parameters_base};
+      console.debug(p);
+      return p;
+    },
 
-    };
 
      // The hashi (v0) file object should be object with keys filename, url...
-  EcotoxTemplateResource.hashiObject = function(file) {
+    hashiObject: function(file) {
        console.debug('hashiObject', file);
       return {
         url: file.uri,
@@ -31,10 +43,9 @@ function EcotoxTemplate( $q, EcotoxTemplateResource) {
         md5sum: (file.hash||'md5:').split('md5:')[1],
         content_type: file.type
       };
-    };
+    },
 
-
-    EcotoxTemplateResource.fileObject = function(hashi) {
+    fileObject: function(hashi) {
       console.debug('fileObject', hashi);
       return {
         uri: hashi.url,
@@ -43,11 +54,9 @@ function EcotoxTemplate( $q, EcotoxTemplateResource) {
         hash: 'md5:'+hashi.md5sum,
         type: hashi.content_type
      };
-   };
+   }
 
-  return EcotoxTemplateResource;
-
-
+ });
 
 }
 module.exports = EcotoxTemplate;

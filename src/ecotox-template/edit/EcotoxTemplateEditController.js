@@ -13,7 +13,9 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
   });
 
   // EcotoxTemplate -> npolarApiResource -> ngResource
+  console.log(EcotoxTemplate);
   $scope.resource = EcotoxTemplate;
+
 
 
   let templates = [];
@@ -37,16 +39,15 @@ var EcotoxTemplateEditController = function($scope, $controller, $routeParams, E
    });
 }
 
-
   try {
     init();
+
      // edit (or new) action
      $scope.edit();
 
   } catch (e) {
     NpolarMessage.error(e);
   }
-
 };
 
 module.exports = EcotoxTemplateEditController;

@@ -10,6 +10,7 @@ require('npdc-common/src/wrappers/leaflet');
 
 var npdcEcotoxApp = angular.module('npdcEcotoxApp', ['npdcCommon']);
 
+
 npdcEcotoxApp.controller('EcotoxTemplateShowController', require('./ecotox-template/show/EcotoxTemplateShowController'));
 npdcEcotoxApp.controller('EcotoxTemplateSearchController', require('./ecotox-template/search/EcotoxTemplateSearchController'));
 npdcEcotoxApp.controller('EcotoxTemplateEditController', require('./ecotox-template/edit/EcotoxTemplateEditController'));
@@ -35,8 +36,10 @@ var resources = [
   {'path': '/publication', 'resource': 'Publication'},
   {'path': '/geology/sample', 'resource': 'GeologySample'},
   {'path': '/ecotox/template', 'resource': 'EcotoxTemplateResource'},
-  {'path': '/ecotox/template', 'resource': 'EcotoxTemplate'},
+  //{'path': '/ecotox/template', 'resource': 'EcotoxTemplate'},
   {'path': '/ecotox/fieldwork', 'resource': 'EcotoxFieldwork'}
+
+
 ];
 
 
@@ -50,19 +53,22 @@ resources.forEach(service => {
 // Routing
 npdcEcotoxApp.config(require('./router'));
 
-npdcEcotoxApp.config(($httpProvider, npolarApiConfig) => {
-  var autoconfig = new AutoConfig("development");
-  //var autoconfig = new AutoConfig("production");
-   autoconfig.base = '//api-test.data.npolar.no';
-  //autoconfig.base = '//api.npolar.no';
+npdcEcotoxApp.config(($httpProvider) => {
 
-  angular.extend(npolarApiConfig, autoconfig, { resources });
-  console.debug("npolarApiConfig", npolarApiConfig);
 
   $httpProvider.interceptors.push('npolarApiInterceptor');
 });
 
-npdcEcotoxApp.run(( npdcAppConfig, NpolarTranslate) => {
+npdcEcotoxApp.run(($http, npolarApiConfig,  npdcAppConfig, NpolarTranslate) => {
+  var environment = "development";
+
+  var autoconfig = new AutoConfig(environment);
+  autoconfig.environment = "development";
+    //var autoconfig = new AutoConfig("production");
+  autoconfig.base = '//api-test.data.npolar.no';
+
+   Object.assign(npolarApiConfig, autoconfig, { resources, formula : { template : 'default' } });
+
   npdcAppConfig.help = { uri: 'https://github.com/npolar/npdc-ecotox/wiki' };
   //NpolarTranslate.loadBundles('npdc-ecotox');
   npdcAppConfig.toolbarTitle = NpolarTranslate.translate("Norwegian Polar Institute's ecotox archive");
