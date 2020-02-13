@@ -154,7 +154,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
         //Saving
-        //EcotoxFieldworkDBSave.update({ id: obj.id }, obj);
         EcotoxFieldworkDBSave.update({id: obj.id},obj).$promise.then(
             //success
             function( value ){
@@ -165,8 +164,11 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
             //error
             function( error ){
               //Collect error messages
-              let err = (i+1).toString() + ": " + error.data.error;
-              error_arr.push(err);
+              if (typeof error.data.error === 'string' || error.data.error instanceof String){
+                   error_arr.push((i+1).toString() + ": " + error.data.error);
+              } else {
+                   error_arr.push((i+1).toString() + ": " + error.data.error.explanation[0][obj.id][0].message);
+              }
               returnResponse(jsonObj_cleaned);
             }
         );
