@@ -9,6 +9,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
   $scope.id = $routeParams.id;
 
+
   //let tb = require( '@srldl/edit-tabletest/js/edit-table.js');
   let tb = require('@srldl/exceldb/index.js');
 
@@ -29,6 +30,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   function isInteger(value) {
      return /^\d+$/.test(parseInt(value));
   }
+
 
   //Can the string be converted into a float
   function isFloat(value) {
@@ -53,12 +55,34 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
     return jsonObj;
   }
 
+  //Catch all promeses when they are returned
+  let value_arr = []; //Updated dataRows if success
+  let error_arr = [];  //Error messages if things fails
+  let count_arr = []; //Holds the count to make sure all async are returned
+  //Count and give response when all async calls have returned
+  function returnResponse(jsonObj_cleaned){
+       count_arr.push('x');
+       if ((count_arr.length === jsonObj_cleaned.dataRows.length)&&(error_arr.length>0)){
+           alert(error_arr);
+       }
+       if ((count_arr.length === jsonObj_cleaned.dataRows.length)&&(value_arr.length>0)){
+           jsonObj_cleaned.dataRows = value_arr;
+           console.log(jsonObj_cleaned);
+           location.reload();
+           tb.insertTable(jsonObj_cleaned,saveDb);
+
+       }
+  }
+
+
 
    //Save to database
    function saveDb(jsonObj){
 
         //Clean the array for empty rows
         let jsonObj_cleaned = checkIfRowEmpty(jsonObj);
+        console.log(jsonObj_cleaned);
+        console.log("saved------------");
 
         CSVService.entryObject = jsonObj_cleaned.dataRows;
 
@@ -72,20 +96,20 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
            //a proper integer/number write back alert warning
            //instead of saving.
            if ((tp === 'integer') || ((Array.isArray(tp))&&(tp[0] === 'integer'))){
-              for (let v=0;v<jsonObj_cleaned.dataRows.length;v++){
-                if ((isInteger(jsonObj_cleaned.dataRows[v][u]))&&(jsonObj_cleaned.dataRows[v][u].length>0)){
-                     jsonObj_cleaned.dataRows[v][u] = parseInt(jsonObj_cleaned.dataRows[v][u]);
-                } else if (isInteger(jsonObj_cleaned.dataRows[v][u] === false)) {
-                     err_str = err_str + jsonObj_cleaned.headers[u] + " row " + v.toString() + " is not integer.\n";
-                } //if
-              }
+             for (let v=0;v<jsonObj_cleaned.dataRows.length;v++){
+               if ((isInteger(jsonObj_cleaned.dataRows[v][u]))&&(jsonObj_cleaned.dataRows[v][u].length>0)){
+                    jsonObj_cleaned.dataRows[v][u] = parseInt(jsonObj_cleaned.dataRows[v][u]);
+               } else if (isInteger(jsonObj_cleaned.dataRows[v][u] === false)) {
+                    err_str = err_str + jsonObj_cleaned.headers[u] + " row " + v.toString() + " is not integer.\n";
+               } //if
+             }
            //If type of field is a number
            } else if ((tp === 'number') || ((Array.isArray(tp))&&(tp[0] === 'number'))){
              for (let v=0;v<jsonObj_cleaned.dataRows.length;v++){
                if ((isFloat(jsonObj_cleaned.dataRows[v][u]))&&(jsonObj_cleaned.dataRows[v][u].length>0)){
                     jsonObj_cleaned.dataRows[v][u] = Number(jsonObj_cleaned.dataRows[v][u]);
                } else if (isFloat(jsonObj_cleaned.dataRows[v][u]) === false ){
-                    err_str = err_str + jsonObj_cleaned.headers[u] + " row " + v.toString() + " is not number(use dot-notation).\n";
+                    err_str = err_str + jsonObj_cleaned.headers[u] + " row " + (v+1).toString() + " is not number(use dot-notation).\n";
                } //if
              }
            }
@@ -97,7 +121,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
         } else {
 
 
-          for (let i=0;i<jsonObj_cleaned.dataRows.length;i++){
+            for (let i=0;i<jsonObj_cleaned.dataRows.length;i++){
           //Extending object with base properties
             let obj  = {
               "schema": "http://api.npolar.no/schema/ecotox-fieldwork",
@@ -113,9 +137,9 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
           for (let j=0;j<jsonObj_cleaned.headers.length;j++){
 
              //If field is a date, convert it into a ISO8601 field
-             if (jsonObj_cleaned.dateFields.includes(jsonObj_cleaned.headers[j])){
+             if ((jsonObj_cleaned.dateFields.includes(jsonObj_cleaned.headers[j]))&&(jsonObj_cleaned.dataRows[i][j].length > 0)){
                 obj[jsonObj_cleaned.headers[j].toString()] = jsonObj_cleaned.dataRows[i][j]+"T12:00:00.000Z";
-             //if field is empty, it shoul be omitted overall
+             //if field is empty, it should be omitted overall
              //to shorten the json, but also to avoid string to number/int conversion
              //since 0 can be not measured or measured to zero.
              } else if (jsonObj_cleaned.dataRows[i][j] === ''){
@@ -127,15 +151,29 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
              obj._id = obj.database_sample_id;
              delete obj.database_sample_id;
           }
-          console.log(obj);
 
 
-          //Saving
-           EcotoxFieldworkDBSave.update({ id: obj.id }, obj);
+        //Saving
+        //EcotoxFieldworkDBSave.update({ id: obj.id }, obj);
+        EcotoxFieldworkDBSave.update({id: obj.id},obj).$promise.then(
+            //success
+            function( value ){
+              //Collect all stored entries
+              value_arr.push(value);
+              returnResponse(jsonObj_cleaned);
+             },
+            //error
+            function( error ){
+              //Collect error messages
+              let err = (i+1).toString() + ": " + error.data.error;
+              error_arr.push(err);
+              returnResponse(jsonObj_cleaned);
+            }
+        );
+
 
         } //if alert
-
-        }
+      } //for
    }
 
     //Convert object to array
@@ -263,6 +301,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
+               console.log(EcotoxFieldworkService.excelObj);
+               console.log("--------------------Send to view");
                CSVService.entryObject = EcotoxFieldworkService.excelObj;
 
                tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
@@ -275,30 +315,42 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
     } //end function
 
 
-         //Search database, fetch old entries or start a new, empty sheet
-         //This code promise is run first, but will only return the first result
-         var id_base = ($routeParams.id).substring(0, ($routeParams.id).length-2);
-         var ecotoxFieldwork = DBSearchQuery.get({search:'q=&filter-database_sample_id_base='+id_base, link:'ecotox',link2:'fieldwork'}, function(){
-                        //Create input object for library
-                        let fieldwork = [];
+   function getData(id_base){
+            var ecotoxFieldwork = DBSearchQuery.get({search:'q=&filter-database_sample_id_base='+id_base, link:'ecotox',link2:'fieldwork'}, function(){
+                    //Create input object for library
+                    let fieldwork = new Array(ecotoxFieldwork.feed.entries.length-1);
 
-                        for (let i=0;i<ecotoxFieldwork.feed.entries.length;i++){
-                          //delete fieldwork.database_sample_id_base;
-                          fieldwork.push(ecotoxFieldwork.feed.entries[i]);
-                          //In fieldwork object change database_sample_id_base => database_sample_id
-                          //Used in npm packet exceldb as database_sample_id
-                          fieldwork[i].database_sample_id = ecotoxFieldwork.feed.entries[i].id;
-                        }
+                    for (let i=0;i<ecotoxFieldwork.feed.entries.length;i++){
+                      //Need to place the element in the right position
+                      //Get the sample no from the id
+                      let id1 = ecotoxFieldwork.feed.entries[i].id;
+                      let id2 = id1.split('-');
+                      let no = id2[id2.length-1];
+                      fieldwork[parseInt(no)-1]= ecotoxFieldwork.feed.entries[i];
 
-                        //Request may return ok, but without entries
-                        if (ecotoxFieldwork.feed.entries.length > 0){
-                              view_fieldwork($routeParams.id, fieldwork);
-                        } else {
-                              view_fieldwork($routeParams.id, []);
-                        }
-         }, function() {  //get an error, set up as new entry
+                      //fieldwork.push(ecotoxFieldwork.feed.entries[i]);
+                      //In fieldwork object change database_sample_id_base => database_sample_id
+                      //Used in npm packet exceldb as database_sample_id
+                      fieldwork[parseInt(no)-1].database_sample_id = ecotoxFieldwork.feed.entries[i].id;
+                    }
+
+                    //Request may return ok, but without entries
+                    if (ecotoxFieldwork.feed.entries.length > 0){
+                         view_fieldwork($routeParams.id, fieldwork);
+                    } else {
+                         view_fieldwork($routeParams.id, []);
+                    }
+
+              }, function() {  //get an error, set up as new entry
                         view_fieldwork($routeParams.id, []);
-         });
+                        return 0;
+              });
+   }
+
+         //Search database, fetch old entries or start a new, empty sheet
+         //This code calles getData which promise is run first, but will only return the first result
+         var id_base = ($routeParams.id).substring(0, ($routeParams.id).length-2);
+         getData(id_base);
 
 };
 
