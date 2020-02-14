@@ -27,8 +27,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   }
 
   //Can the string be converted into integer
-  function isInteger(value) {
-     return /^\d+$/.test(parseInt(value));
+  function isInteger2(value) {
+     return /^\d+$/.test(value);
   }
 
 
@@ -58,17 +58,17 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
   //Catch all promeses when they are returned
   let value_arr = []; //Updated dataRows if success
   let error_arr = [];  //Error messages if things fails
-  let count_arr = []; //Holds the count to make sure all async are returned
+  let count = 0; //Holds the count to make sure all async are returned
   //Count and give response when all async calls have returned
   function returnResponse(jsonObj_cleaned){
-       count_arr.push('x');
-       if ((count_arr.length === jsonObj_cleaned.dataRows.length)&&(error_arr.length>0)){
+       count++;
+       if ((count === jsonObj_cleaned.dataRows.length)&&(error_arr.length>0)){
            alert(error_arr);
        }
-       if ((count_arr.length === jsonObj_cleaned.dataRows.length)&&(value_arr.length>0)){
-           jsonObj_cleaned.dataRows = value_arr;
-           console.log(jsonObj_cleaned);
+       if ((count === jsonObj_cleaned.dataRows.length)&&(value_arr.length>0)){
            location.reload();
+           jsonObj_cleaned.dataRows = value_arr;
+
            tb.insertTable(jsonObj_cleaned,saveDb);
 
        }
@@ -81,9 +81,6 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
         //Clean the array for empty rows
         let jsonObj_cleaned = checkIfRowEmpty(jsonObj);
-        console.log(jsonObj_cleaned);
-        console.log("saved------------");
-
         CSVService.entryObject = jsonObj_cleaned.dataRows;
 
         //Quality control of fields - numbers, integers, arrays
@@ -97,11 +94,13 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
            //instead of saving.
            if ((tp === 'integer') || ((Array.isArray(tp))&&(tp[0] === 'integer'))){
              for (let v=0;v<jsonObj_cleaned.dataRows.length;v++){
-               if ((isInteger(jsonObj_cleaned.dataRows[v][u]))&&(jsonObj_cleaned.dataRows[v][u].length>0)){
+                if (jsonObj_cleaned.dataRows[v][u].length === 0){
+                     jsonObj_cleaned.dataRows[v][u] = '';
+                } else if (isInteger2(jsonObj_cleaned.dataRows[v][u])) {
                     jsonObj_cleaned.dataRows[v][u] = parseInt(jsonObj_cleaned.dataRows[v][u]);
-               } else if (isInteger(jsonObj_cleaned.dataRows[v][u] === false)) {
+                } else if ((isInteger2(jsonObj_cleaned.dataRows[v][u])) === false) {
                     err_str = err_str + jsonObj_cleaned.headers[u] + " row " + v.toString() + " is not integer.\n";
-               } //if
+                }//if
              }
            //If type of field is a number
            } else if ((tp === 'number') || ((Array.isArray(tp))&&(tp[0] === 'number'))){
@@ -303,10 +302,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
 
                $scope.excelObj = EcotoxFieldworkService.excelObj;
-               console.log(EcotoxFieldworkService.excelObj);
-               console.log("--------------------Send to view");
                CSVService.entryObject = EcotoxFieldworkService.excelObj;
-
                tb.insertTable(EcotoxFieldworkService.excelObj,saveDb);
 
             });  //Fetch selects

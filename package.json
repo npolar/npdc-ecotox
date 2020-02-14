@@ -12,7 +12,7 @@
   "private": true,
   "repository": "https://github.com/npolar/npdc-ecotox",
   "dependencies": {
-    "@srldl/exceldb": "^1.1.0",
+    "@srldl/exceldb": "^1.1.2",
     "npdc-common": "github:npolar/npdc-common#v4.11.5"
   },
   "devDependencies": {
