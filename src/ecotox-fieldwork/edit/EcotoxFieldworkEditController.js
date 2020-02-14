@@ -117,6 +117,8 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
 
         if (err_str.length > 0) {
            alert(err_str);
+        } else if (NpolarApiSecurity.isAuthorized('create', 'https:' + $scope.resource.path) === false){
+           alert("You are not authorized. Please log in.");
         } else {
 
 
