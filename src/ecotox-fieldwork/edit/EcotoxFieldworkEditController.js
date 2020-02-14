@@ -299,7 +299,7 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
                             "saveJson":[],
                             "id": id_base,
                             //"deleted_entries":[], //Ids of deleted entries
-                            "sanitize": true
+                            "sanitize": false
                           };
 
 
@@ -318,7 +318,10 @@ var EcotoxFieldworkEditController = function($http, $scope, $location, $controll
    function getData(id_base){
             var ecotoxFieldwork = DBSearchQuery.get({search:'q=&filter-database_sample_id_base='+id_base, link:'ecotox',link2:'fieldwork'}, function(){
                     //Create input object for library
-                    let fieldwork = new Array(ecotoxFieldwork.feed.entries.length-1);
+                    let fieldwork = [];
+                    if (ecotoxFieldwork.feed.entries.length > 0){
+                       fieldwork = new Array(ecotoxFieldwork.feed.entries.length-1);
+                    }
 
                     for (let i=0;i<ecotoxFieldwork.feed.entries.length;i++){
                       //Need to place the element in the right position
