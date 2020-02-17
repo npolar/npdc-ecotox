@@ -13,13 +13,16 @@
 
 <section>
 <h4>Overall advice:<br/>
-  1) use "." as decimal separator,<br/>
-  2) use decimal degrees for latitude and longitude,<br />
-  3) use Svalbard placenames whenever possible,<br/>
-  4) write in  English unless Norwegian is specifically demanded,<br/>
-  5) use small letters throughout (except placenames and title),<br/>
-  6) use underscore ("_") to connect words in title and for additional parameters,<br/>
-  7) for additional parameters, please check parameter list and reuse parameter names if possible.</h4>
+  1) use "." as decimal separator ("44.5"),<br/>
+  2) use empty field is not measured rather than f.ex. "n.a",<br/>
+  3) for dates, use dd-mm-yyyy ("13-12-2010"),<br/>
+  4) for time, use ":" ("12:59"),<br/>
+  5) use decimal degrees for latitude and longitude,<br />
+  6) use Svalbard placenames whenever possible,<br/>
+  7) write in  English unless Norwegian is specifically demanded,<br/>
+  8) use small letters throughout (except placenames and title),<br/>
+  9) use underscore ("_") to connect words in title and for additional parameters,<br/>
+  10) for additional parameters, please check parameter list and reuse parameter names if possible.</h4>
 </section>
 
 
@@ -51,11 +54,11 @@
 
     <p ng-if="(document.parameters_time_and_place.event_date == true)" ><b>{{ 'Event date' | t }}</b></p>
 
-    <p ng-if="(document.parameters_time_and_place.placename == true)"><b> {{ 'Placename' | t }}</b> <span ng-if='(document.use_list).includes("placename")'><i>Fetch placenames from Svalbard placenames.</i></span></p>
+    <p ng-if="(document.parameters_time_and_place.placename == true)"><b> {{ 'Placename' | t }}</b><!-- <span ng-if='(document.use_list).includes("placename")'><i>Fetch placenames from Svalbard placenames.</i></span>--></p>
 
-    <p ng-if="(document.parameters_time_and_place.latitude == true)"><b> {{ 'Latitude' | t }}</b><span ng-if='(document.use_list).includes("latitude")'><i> Fetch latitudes from Svalbard placenames.</i></span></p>
+    <p ng-if="(document.parameters_time_and_place.latitude == true)"><b> {{ 'Latitude' | t }}</b><!--<span ng-if='(document.use_list).includes("latitude")'><i> Fetch latitudes from Svalbard placenames.</i></span>--></p>
 
-    <p ng-if="(document.parameters_time_and_place.longitude == true)"><b> {{ 'Longitude' | t }}</b><span ng-if='(document.use_list).includes("longitude")'><i> Fetch longitudes from Svalbard placenames.</i></span></p>
+    <p ng-if="(document.parameters_time_and_place.longitude == true)"><b> {{ 'Longitude' | t }}</b><!--<span ng-if='(document.use_list).includes("longitude")'><i> Fetch longitudes from Svalbard placenames.</i></span>--></p>
 
     <p ng-if="(document.parameters_time_and_place.position_accuracy == true)"><b> {{ 'Position accuracy' | t }} </b>{{jsonSchema.properties.entry.items.position_accuracy.enum}}</p>
 

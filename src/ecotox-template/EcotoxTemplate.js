@@ -20,10 +20,11 @@ function EcotoxTemplate(EcotoxTemplateResource) {
 	         "event_date": true,
 	         "placename": true,
 	         "latitude": true,
-	         "longitude": true
+	         "longitude": true,
+           "position_accuracy":true
       };
       let parameters_base = {
-	       "species": true
+	         "species": true
       };
 
       let p = {lang,collection,schema,parameters_metadata,parameters_time_and_place,parameters_base};

@@ -37,7 +37,8 @@
 			"fields": [{
 					"id": "parameters_time_and_place",
 					"title": "Time and place"
-				}
+				},
+				"use_list"
 			]
 		},
 		{
