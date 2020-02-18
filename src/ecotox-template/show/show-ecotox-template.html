@@ -9,7 +9,6 @@
   <div ng-if="document" class="np-doc">
 
 
-<h2 ng-if="document.title">{{document.title}}</h2>
 
 <section>
 <h4>Overall advice:<br/>
@@ -27,6 +26,9 @@
 
 
 
+<h2 ng-if="document.title">{{document.title}}</h2>
+
+<h3 ng-if="document.project_description">{{document.project_description}}</h3>
 
 
 <section>

@@ -6,6 +6,10 @@
 					"title": "title"
 				},
 				{
+						"id": "project_description",
+						"title": "please briefly describe activity to separate it from other projects"
+					},
+				{
 					"id": "parameters_metadata",
 					"title": "Metadata",
 					"fields": [
