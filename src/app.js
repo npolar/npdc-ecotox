@@ -60,12 +60,13 @@ npdcEcotoxApp.config(($httpProvider) => {
 });
 
 npdcEcotoxApp.run(($http, npolarApiConfig,  npdcAppConfig, NpolarTranslate) => {
-  var environment = "development";
+  //var environment = "development";
 
-  var autoconfig = new AutoConfig(environment);
-  autoconfig.environment = "development";
-    //var autoconfig = new AutoConfig("production");
-  autoconfig.base = '//api-test.data.npolar.no';
+  //var autoconfig = new AutoConfig(environment);
+  //autoconfig.environment = "development";
+  var autoconfig = new AutoConfig("production");
+//  autoconfig.base = '//api-test.data.npolar.no';
+  autoconfig.base = '//api.npolar.no';
 
    Object.assign(npolarApiConfig, autoconfig, { resources, formula : { template : 'default' } });
 
